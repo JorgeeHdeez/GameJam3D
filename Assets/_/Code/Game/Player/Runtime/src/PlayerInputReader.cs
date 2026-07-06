@@ -19,6 +19,8 @@ namespace Player.Runtime
         [SerializeField] private InputActionReference _crawlAction;
         [SerializeField] private InputActionReference _wallHugAction;
         [SerializeField] private InputActionReference _peekAction;
+        [SerializeField] private InputActionReference _lookMouseAction;
+        [SerializeField] private InputActionReference _lookStickAction;
 
         #endregion
 
@@ -44,6 +46,19 @@ namespace Player.Runtime
         /// <summary>True while the corner-peek modifier is held down.</summary>
         public bool PeekHeld => _peekAction.action.IsPressed();
 
+        /// <summary>
+        /// Raw mouse delta since last frame (pixels), already frame-independent.
+        /// Bind this action to Mouse/delta.
+        /// </summary>
+        public Vector2 LookMouseDelta => _lookMouseAction.action.ReadValue<Vector2>();
+
+        /// <summary>
+        /// Raw gamepad look stick value, range [-1, 1] per axis. This is a held
+        /// direction, not a delta, so it must be scaled by deltaTime by the reader.
+        /// Bind this action to Gamepad/rightStick.
+        /// </summary>
+        public Vector2 LookStick => _lookStickAction.action.ReadValue<Vector2>();
+
         /// <summary>True while the posture intent is prone (crawling).</summary>
         public bool CrawlActive => _posture == Posture.Prone;
 
@@ -63,6 +78,8 @@ namespace Player.Runtime
             _crawlAction.action.Enable();
             _wallHugAction.action.Enable();
             _peekAction.action.Enable();
+            _lookMouseAction.action.Enable();
+            _lookStickAction.action.Enable();
 
             _crouchAction.action.performed += OnCrouchPerformed;
             _crawlAction.action.performed += OnCrawlPerformed;
@@ -79,6 +96,8 @@ namespace Player.Runtime
             _crawlAction.action.Disable();
             _wallHugAction.action.Disable();
             _peekAction.action.Disable();
+            _lookMouseAction.action.Disable();
+            _lookStickAction.action.Disable();
         }
 
         #endregion
