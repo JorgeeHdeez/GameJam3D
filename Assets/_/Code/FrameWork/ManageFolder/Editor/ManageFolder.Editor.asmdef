@@ -1,0 +1,19 @@
+{
+    "name": "ManageFolder.Editor",
+    "rootNamespace": "ManageFolder.Editor",
+    "references": [
+        "GUID:98d52be6e37e2a041aadc16ec6310b28",
+        "GUID:27eea57a07680174eb62e67ad5029789"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
