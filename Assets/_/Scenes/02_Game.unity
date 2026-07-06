@@ -674,11 +674,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 786058118}
+  - component: {fileID: 786058120}
+  - component: {fileID: 786058119}
+  - component: {fileID: 786058121}
   - component: {fileID: 786058117}
   - component: {fileID: 786058116}
   - component: {fileID: 786058115}
-  - component: {fileID: 786058120}
-  - component: {fileID: 786058119}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -794,10 +795,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 723ba8876bfa45e4cb489ccdf7a76e4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Enemy.Runtime::Enemy.Runtime.EnemyPatrol
-  _updateManager: {fileID: 0}
-  _perception: {fileID: 0}
-  _noisePingChannel: {fileID: 0}
-  _waypoints: []
+  _updateManager: {fileID: 677410017}
+  _perception: {fileID: 786058120}
+  _noisePingChannel: {fileID: 11400000, guid: be629f7390a310c479c45d870a31a29d, type: 2}
+  _waypoints:
+  - {fileID: 743114433}
+  - {fileID: 852003857}
+  - {fileID: 1265517830}
+  - {fileID: 1481333521}
+  - {fileID: 269603225}
+  - {fileID: 2027960312}
   _moveSpeed: 2
   _turnSpeed: 360
   _arriveDistance: 0.3
@@ -817,10 +824,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Enemy.Runtime::Enemy.Runtime.EnemyPerception
   _updateManager: {fileID: 677410017}
   _target: {fileID: 1677282001}
-  _noiseChannel: {fileID: 0}
-  _stateChannel: {fileID: 0}
-  _alarmChannel: {fileID: 0}
-  _noisePingChannel: {fileID: 0}
+  _noiseChannel: {fileID: 11400000, guid: 634e70f0970906f4cb4132877089d5b2, type: 2}
+  _stateChannel: {fileID: 11400000, guid: 88bc94b8425481145aae57a316c16f11, type: 2}
+  _alarmChannel: {fileID: 11400000, guid: f6406f8133127a94a80f360cc76d136e, type: 2}
+  _noisePingChannel: {fileID: 11400000, guid: be629f7390a310c479c45d870a31a29d, type: 2}
   _eyeHeight: 1.6
   _targetHeight: 1.2
   _viewDistance: 12
@@ -835,6 +842,25 @@ MonoBehaviour:
   _suspiciousThreshold: 0.4
   _alertedThreshold: 0.95
   _pingDetectionBump: 0.5
+--- !u!114 &786058121
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 786058114}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: faaa3b338e1423b4ca5399dc4136d9ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Enemy.Runtime::Enemy.Runtime.EnemyChase
+  _updateManager: {fileID: 677410017}
+  _perception: {fileID: 786058120}
+  _target: {fileID: 1677282001}
+  _catchChannel: {fileID: 11400000, guid: 28a772f9a3af4624fbaa021f466ce898, type: 2}
+  _chaseSpeed: 3.5
+  _turnSpeed: 540
+  _catchDistance: 0.6
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
