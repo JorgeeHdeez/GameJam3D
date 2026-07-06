@@ -1295,7 +1295,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1677281997}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -1435,7 +1435,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Player.Runtime::Player.Runtime.WallSensor
   _wallLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   _checkDistance: 0.6
   _originHeight: 1
   _rayCount: 6
@@ -1526,7 +1526,7 @@ MonoBehaviour:
   _updateManager: {fileID: 677410017}
   _input: {fileID: 1677282008}
   _cameraPivot: {fileID: 1367444197}
-  _mouseSensitivity: 0.15
+  _mouseSensitivity: 0.05
   _gamepadSensitivity: 120
   _minPitch: -80
   _maxPitch: 80
