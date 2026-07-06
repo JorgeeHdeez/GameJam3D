@@ -1,0 +1,22 @@
+{
+    "name": "Enemy.Runtime",
+    "rootNamespace": "Enemy.Runtime",
+    "references": [
+        "GUID:27eea57a07680174eb62e67ad5029789"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "Select...",
+            "expression": "",
+            "define": ""
+        }
+    ],
+    "noEngineReferences": false
+}
