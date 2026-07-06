@@ -14,8 +14,8 @@ namespace ManageFolders.Editor
             "Assets/_/Content",
             "Assets/_/Database",
             "Assets/_/Database/Prefabs",
-            "Assets/_/Database/Scenes",
-            "Assets/_/Database/Settings"
+            "Assets/_/Database/Settings",
+            "Assets/_/Scenes"
         };
 
         public static AssetDeleteResult OnWillDeleteAsset(string path, RemoveAssetOptions options)

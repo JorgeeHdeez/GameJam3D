@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: feba3ff77aee3424e822bff1dc7073a7, type: 3}
+  m_Name: Main menu
+  m_EditorClassIdentifier: MenuUIControl.Runtime::MenuUiControl.Runtime.UIScreen
+  m_scene:
+    m_sceneAsset: {fileID: 102900000, guid: 392befbdd79332848a061d41a9005b2a, type: 3}
+    _scenePath: Assets/_/Database/UIScreens/_OriginalScenes/Main menu_KlhzTest_v1.unity
+    _sceneName: Main menu_KlhzTest_v1
+    _sourceGuid: 
+    _returnName: 
+  m_loadOnStart: 0
+  m_showTrigger: 0
+  m_hideTrigger: 0
+  m_isOverlay: 1
+  m_blockPause: 0

@@ -14,6 +14,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_/Scenes/03_EndScreen.unity
     guid: bb6dd826269b13f48a6c15884a7d5925
+  - enabled: 1
+    path: Assets/_/Database/UIScreens/_OriginalScenes/Main menu_KlhzTest_v1.unity
+    guid: 392befbdd79332848a061d41a9005b2a
+  - enabled: 1
+    path: Assets/_/Scenes/KlhzTest.unity
+    guid: 907bbaa67e3a3e14281d752f67d26a80
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: 118450fad714b420684eb5f984268b5c
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252960
+  packageName: "PrimeTween \xB7 High-Performance Animations and Sequences"
+  packageVersion: 1.4.8
+  assetPath: Assets/Plugins/PrimeTween/internal/PrimeTweenInstaller.cs
+  uploadId: 937466
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - demoScene: {fileID: 102900000, guid: 13170347bc506405f88d3a87bd0982b3, type: 3}
+  - demoSceneUrp: {fileID: 102900000, guid: 15054139658a5445689224c71f805b10, type: 3}
+  - demoScenePro: {instanceID: 0}
+  - demoSceneProUrp: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
