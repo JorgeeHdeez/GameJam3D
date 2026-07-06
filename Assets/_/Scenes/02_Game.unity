@@ -1083,6 +1083,14 @@ GameObject:
   - component: {fileID: 1677282000}
   - component: {fileID: 1677281999}
   - component: {fileID: 1677281998}
+  - component: {fileID: 1677282009}
+  - component: {fileID: 1677282008}
+  - component: {fileID: 1677282007}
+  - component: {fileID: 1677282006}
+  - component: {fileID: 1677282005}
+  - component: {fileID: 1677282004}
+  - component: {fileID: 1677282003}
+  - component: {fileID: 1677282002}
   m_Layer: 0
   m_Name: Player_ROOT
   m_TagString: Untagged
@@ -1185,6 +1193,169 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!143 &1677282002
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1677281997}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Height: 2
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1677282003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1677281997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2723502198a3340418b68bffd13ed5a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Player.Runtime::Player.Runtime.NoiseEmitter
+  _noiseChannel: {fileID: 11400000, guid: 634e70f0970906f4cb4132877089d5b2, type: 2}
+  _walkNoiseRadius: 4
+  _runNoiseRadius: 9
+  _crouchNoiseRadius: 2
+  _crawlNoiseRadius: 1
+--- !u!114 &1677282004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1677281997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aadf305ab2484554ea612ce753fad8e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Player.Runtime::Player.Runtime.PlayerAnimatorDriver
+  _animator: {fileID: 0}
+  _speedDampTime: 0.12
+--- !u!114 &1677282005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1677281997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f86c1a11b629204bb409d3c9511dc99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Player.Runtime::Player.Runtime.CornerSensor
+  _wallLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  _edgeProbeDistance: 0.6
+  _wallProbeDepth: 0.9
+  _originHeight: 1
+--- !u!114 &1677282006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1677281997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86b85904ae983874d8857358811e8571, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Player.Runtime::Player.Runtime.WallSensor
+  _wallLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  _checkDistance: 0.6
+  _originHeight: 1
+  _rayCount: 6
+  _arcAngle: 150
+--- !u!114 &1677282007
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1677281997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1e6341dad4cf4645a7c820fcca47cf1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Player.Runtime::Player.Runtime.PlayerMotor
+  _characterController: {fileID: 1677282002}
+  _gravity: -20
+  _turnSpeed: 720
+--- !u!114 &1677282008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1677281997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0091497f36b5ec438c50bbb0d04b0a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Player.Runtime::Player.Runtime.PlayerInputReader
+  _moveAction: {fileID: -1680190386980627800, guid: 6d045fe94322aef48b04bad48ff8dc73, type: 3}
+  _runAction: {fileID: -7471211009204490832, guid: 6d045fe94322aef48b04bad48ff8dc73, type: 3}
+  _crouchAction: {fileID: -4902956474222673783, guid: 6d045fe94322aef48b04bad48ff8dc73, type: 3}
+  _crawlAction: {fileID: -829192694776609361, guid: 6d045fe94322aef48b04bad48ff8dc73, type: 3}
+  _wallHugAction: {fileID: 6803486442991059580, guid: 6d045fe94322aef48b04bad48ff8dc73, type: 3}
+  _peekAction: {fileID: -6825523751159957991, guid: 6d045fe94322aef48b04bad48ff8dc73, type: 3}
+--- !u!114 &1677282009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1677281997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 623d81db4b50e9949928644fb926f368, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Player.Runtime::Player.Runtime.PlayerController
+  _updateManager: {fileID: 677410017}
+  _input: {fileID: 1677282008}
+  _motor: {fileID: 1677282007}
+  _wallSensor: {fileID: 1677282006}
+  _cornerSensor: {fileID: 1677282005}
+  _animatorDriver: {fileID: 1677282004}
+  _noiseEmitter: {fileID: 1677282003}
+  _coverContextChannel: {fileID: 11400000, guid: bd53c7397ebac7f46a7a7b52a434b443, type: 2}
+  _alarmChannel: {fileID: 11400000, guid: f6406f8133127a94a80f360cc76d136e, type: 2}
+  _cameraPivot: {fileID: 330585546}
+  _runSpeed: 5.5
+  _crouchSpeed: 2
+  _crawlSpeed: 1.2
+  _wallHugSpeed: 1.5
+  _runThreshold: 0.85
+  _crawlEnterLock: 0.8
+  _crawlExitLock: 0.8
+  _crouchEnterLock: 0.4
+  _crouchExitLock: 0.4
+  _coverEnterLock: 0.2
+  _coverExitLock: 0.2
+  _coverFacingDeadzone: 0.5
+  _peekSpeed: 4
+  _peekSideShift: 0.5
+  _peekForwardShift: 0.3
 --- !u!1 &1816500036
 GameObject:
   m_ObjectHideFlags: 0

@@ -23,7 +23,6 @@ namespace Player.Runtime
         [SerializeField] private PlayerMotor _motor;
         [SerializeField] private WallSensor _wallSensor;
         [SerializeField] private CornerSensor _cornerSensor;
-        [SerializeField] private PlayerAnimatorDriver _animatorDriver;
         [SerializeField] private NoiseEmitter _noiseEmitter;
         [SerializeField] private CoverContextEventChannelSO _coverContextChannel;
         [SerializeField] private VoidEventChannelSO _alarmChannel;
@@ -105,11 +104,6 @@ namespace Player.Runtime
 
             ApplyMovement(moveDirection, inputMagnitude, rawInput, isMoving, movementLocked, deltaTime);
 
-            if (_animatorDriver != null)
-            {
-                _animatorDriver.Apply(_currentState, _input.CrouchActive, ResolveLocomotionMagnitude(_currentState, inputMagnitude, isMoving), deltaTime);
-            }
-
             _noiseEmitter.Emit(_currentState);
         }
 
@@ -150,7 +144,6 @@ namespace Player.Runtime
         private float _transitionLockTimer;
         private bool _isKnockedOut;
         private float _peekAmount;
-        private float _coverAdvance;
         private bool _wasInCover;
         private bool _coverFacingRight;
         private bool _coverFlipHeldPrev;
@@ -217,11 +210,7 @@ namespace Player.Runtime
             // South (pull back) flips the sneak direction, edge-triggered so a held
             // stick flips only once per press. The flip fires the one-shot turn clip.
             bool flipHeld = rawInput.y < -_coverFacingDeadzone;
-            if (flipHeld && !_coverFlipHeldPrev)
-            {
-                _coverFacingRight = !_coverFacingRight;
-                if (_animatorDriver != null) _animatorDriver.TriggerCoverTurn();
-            }
+            if (flipHeld && !_coverFlipHeldPrev) _coverFacingRight = !_coverFacingRight;
             _coverFlipHeldPrev = flipHeld;
 
             Vector3 travel = _coverFacingRight ? wallRight : -wallRight;
@@ -231,14 +220,7 @@ namespace Player.Runtime
             _motor.Move(isAdvancing ? travel : Vector3.zero, isAdvancing ? _wallHugSpeed * advance : 0.0f, deltaTime);
             _motor.FaceTowards(wallNormal, deltaTime);
 
-            // Advance magnitude (0..1) freezes the cover-sneak clip when idle via the
-            // state's Speed multiplier; facing picks the left/right sneak, look and turn.
-            _coverAdvance = advance;
-
             UpdateCornerPeek(isAdvancing, deltaTime);
-
-            float facing = _coverFacingRight ? 1.0f : -1.0f;
-            if (_animatorDriver != null) _animatorDriver.SetCoverPeek(_peekAmount, facing);
         }
 
         // Leans the first-person camera pivot sideways (and slightly forward) around
@@ -275,7 +257,6 @@ namespace Player.Runtime
             {
                 _peekAmount = 0.0f;
                 _coverFlipHeldPrev = false;
-                if (_animatorDriver != null) _animatorDriver.SetCoverPeek(0.0f, _coverFacingRight ? 1.0f : -1.0f);
                 if (_cameraPivot != null) _cameraPivot.localPosition = _pivotRestLocalPosition;
             }
 
@@ -333,20 +314,6 @@ namespace Player.Runtime
             if (from == PlayerState.WallHugging) return _coverExitLock;
 
             return 0.0f;
-        }
-
-        // Normalized planar speed (0..1) fed to the locomotion blend tree. Standing and
-        // crawling report the analog stick tilt directly, so their clips play at a rate
-        // proportional to movement and freeze when idle (via the state Speed multiplier).
-        // Cover reports its own advance, and everything returns 0 when idle or knocked
-        // out so the trees settle on their resting pose.
-        private float ResolveLocomotionMagnitude(PlayerState state, float inputMagnitude, bool isMoving)
-        {
-            if (state == PlayerState.KnockedOut) return 0.0f;
-            if (!isMoving) return 0.0f;
-            if (state == PlayerState.WallHugging) return _coverAdvance;
-
-            return inputMagnitude;
         }
 
         #endregion
