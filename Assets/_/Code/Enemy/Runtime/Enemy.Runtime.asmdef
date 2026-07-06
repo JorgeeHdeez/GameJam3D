@@ -2,7 +2,7 @@
     "name": "Enemy.Runtime",
     "rootNamespace": "Enemy.Runtime",
     "references": [
-        "GUID:68cf3a0adc61ae14791e124e15e9957c"
+        "GUID:27eea57a07680174eb62e67ad5029789"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
@@ -11,6 +11,12 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
-    "versionDefines": [],
+    "versionDefines": [
+        {
+            "name": "Select...",
+            "expression": "",
+            "define": ""
+        }
+    ],
     "noEngineReferences": false
 }
