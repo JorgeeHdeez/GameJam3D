@@ -21,6 +21,7 @@ namespace Player.Runtime
 
         [SerializeField] private UpdateManager _updateManager;
         [SerializeField] private PlayerInputReader _input;
+        [SerializeField] private PlayerController _playerController;
         [SerializeField] private Transform _cameraPivot;
 
         [Header("Sensitivity")]
@@ -40,6 +41,12 @@ namespace Player.Runtime
 
         public void Tick(float deltaTime)
         {
+            // In cover the camera rig owns the pivot rotation (wall-aligned framing),
+            // so free-look yields to avoid two systems fighting over it. Leaving the
+            // body yaw and stored pitch untouched here lets free-look resume seamlessly
+            // the moment cover is released.
+            if (_playerController != null && _playerController.IsInCover) return;
+
             Vector2 look = ResolveLookDelta(deltaTime);
             if (look.sqrMagnitude < LookThresholdSqr) return;
 
