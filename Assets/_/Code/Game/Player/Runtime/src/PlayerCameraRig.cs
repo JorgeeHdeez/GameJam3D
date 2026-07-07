@@ -25,6 +25,7 @@ namespace Player.Runtime
         [SerializeField] private UpdateManager _updateManager;
         [SerializeField] private PlayerInputReader _input;
         [SerializeField] private PlayerController _playerController;
+        [SerializeField] private PlayerLook _playerLook;
         [SerializeField] private CornerSensor _cornerSensor;
         [SerializeField] private Transform _playerBody;
         [SerializeField] private Transform _cameraPivot;
@@ -73,6 +74,8 @@ namespace Player.Runtime
             if (inCover != _wasInCover)
             {
                 if (inCover) EnterCover();
+                else ExitCover();
+
                 _wasInCover = inCover;
             }
 
@@ -147,6 +150,16 @@ namespace Player.Runtime
             _coverPitch = 0.0f;
             _peekAmount = 0.0f;
             _currentHeightDrop = 0.0f;
+        }
+
+        // Hand the current wall-aligned orientation back to free-look so releasing
+        // cover does not snap the view, and - crucially - so the body-relative
+        // movement axes match what the player is looking at. Without this, flipping
+        // the sneak direction in cover and then exiting would invert the controls,
+        // because the body yaw would still point at the (stale) cover-entry direction.
+        private void ExitCover()
+        {
+            if (_playerLook != null) _playerLook.AdoptLook(_cameraPivot.rotation);
         }
 
         private void UpdateCover(float deltaTime)
