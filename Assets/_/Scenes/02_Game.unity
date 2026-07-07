@@ -27829,6 +27829,18 @@ PrefabInstance:
       propertyPath: m_SelectedVertices.Array.size
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8003169546420869120, guid: 1551cd2289e72174380865d96a732346, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.297
+      objectReference: {fileID: 0}
+    - target: {fileID: 8003169546420869120, guid: 1551cd2289e72174380865d96a732346, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.857
+      objectReference: {fileID: 0}
+    - target: {fileID: 8003169546420869120, guid: 1551cd2289e72174380865d96a732346, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.276
+      objectReference: {fileID: 0}
     - target: {fileID: 8421706141841014183, guid: 1551cd2289e72174380865d96a732346, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -27836,32 +27848,8 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1658703382231070328, guid: 1551cd2289e72174380865d96a732346, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1197196196}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1551cd2289e72174380865d96a732346, type: 3}
---- !u!1 &1197196195 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1658703382231070328, guid: 1551cd2289e72174380865d96a732346, type: 3}
-  m_PrefabInstance: {fileID: 1197196194}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1197196196
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1197196195}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12fb5ab501b90b94abb524f8f12e794b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Interractions.Runtime::Interractions.Runtime.OpenDoors
-  m_openRotation: {x: 0, y: 90, z: 0}
-  m_doorDuration: 3.5
-  m_playerTransform: {fileID: 0}
-  m_maxInteractionDistance: 5
 --- !u!43 &1203680522
 Mesh:
   m_ObjectHideFlags: 0
@@ -38082,7 +38070,7 @@ GameObject:
   - component: {fileID: 1677281999}
   m_Layer: 0
   m_Name: Player_ROOT
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -41305,6 +41293,7 @@ GameObject:
   - component: {fileID: 1801932034}
   - component: {fileID: 1801932033}
   - component: {fileID: 1801932032}
+  - component: {fileID: 1801932035}
   m_Layer: 0
   m_Name: WinCondition
   m_TagString: Untagged
@@ -41341,7 +41330,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -41362,6 +41351,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1801932035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1801932031}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cce59b7aec1a7eb4087ab48f9cc2f8a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Player.Runtime::Player.Runtime.WinTrigger
+  m_wonChannel: {fileID: 11400000, guid: 599ab740619ffaa4ab4dc8996a4c34ca, type: 2}
+  m_endSceneName: 
 --- !u!43 &1802608086
 Mesh:
   m_ObjectHideFlags: 0

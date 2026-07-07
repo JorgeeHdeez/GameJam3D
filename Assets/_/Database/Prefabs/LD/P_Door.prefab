@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 560491954411676264}
   - component: {fileID: 8421706141841014183}
   - component: {fileID: 2462033443057168415}
+  - component: {fileID: 8942915451931275057}
   m_Layer: 0
   m_Name: P_Door
   m_TagString: Untagged
@@ -64,6 +65,22 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
+--- !u!114 &8942915451931275057
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1658703382231070328}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12fb5ab501b90b94abb524f8f12e794b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Interractions.Runtime::Interractions.Runtime.OpenDoors
+  m_openRotation: {x: 0, y: 90, z: 0}
+  m_doorDuration: 3.5
+  m_playerTransform: {fileID: 0}
+  m_maxInteractionDistance: 5
 --- !u!1 &4164483286614330355
 GameObject:
   m_ObjectHideFlags: 0
