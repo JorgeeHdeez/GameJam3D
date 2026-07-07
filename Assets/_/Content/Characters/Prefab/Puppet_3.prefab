@@ -76,10 +76,13 @@ PrefabInstance:
       addedObject: {fileID: 6381651366895376865}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: bed411f24ffab5a42ad5eacf74b63b71, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 6171189358640153346}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: bed411f24ffab5a42ad5eacf74b63b71, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 7335635173462863720}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: bed411f24ffab5a42ad5eacf74b63b71, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 6171189358640153346}
+      addedObject: {fileID: 2719101271438745995}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: bed411f24ffab5a42ad5eacf74b63b71, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8494838714237910326}
@@ -146,6 +149,26 @@ MonoBehaviour:
   _suspiciousThreshold: 0.4
   _alertedThreshold: 0.95
   _pingDetectionBump: 0.5
+  _hearingReactionTime: 0.5
+--- !u!114 &6171189358640153346
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3257840626482788321}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: faaa3b338e1423b4ca5399dc4136d9ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Enemy.Runtime::Enemy.Runtime.EnemyChase
+  _updateManager: {fileID: 0}
+  _perception: {fileID: 6381651366895376865}
+  _agent: {fileID: 5482191885898257452}
+  _target: {fileID: 0}
+  _catchChannel: {fileID: 11400000, guid: 28a772f9a3af4624fbaa021f466ce898, type: 2}
+  _chaseSpeed: 3.5
+  _catchDistance: 1.2
 --- !u!114 &7335635173462863720
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -167,7 +190,7 @@ MonoBehaviour:
   _arriveDistance: 0.3
   _waitTime: 1
   _investigateLookTime: 2
---- !u!114 &6171189358640153346
+--- !u!114 &2719101271438745995
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -176,16 +199,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 3257840626482788321}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: faaa3b338e1423b4ca5399dc4136d9ae, type: 3}
+  m_Script: {fileID: 11500000, guid: fb71385b9f8714b439f427469fb87484, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Enemy.Runtime::Enemy.Runtime.EnemyChase
-  _updateManager: {fileID: 0}
-  _perception: {fileID: 6381651366895376865}
+  m_EditorClassIdentifier: Enemy.Runtime::Enemy.Runtime.EnemyRewindReset
+  _gameState: {fileID: 11400000, guid: 6b50f070ce0416d43bc66996ed399f65, type: 2}
   _agent: {fileID: 5482191885898257452}
-  _target: {fileID: 0}
-  _catchChannel: {fileID: 11400000, guid: 28a772f9a3af4624fbaa021f466ce898, type: 2}
-  _chaseSpeed: 3.5
-  _catchDistance: 0.6
+  _perception: {fileID: 6381651366895376865}
+  _behaviours:
+  - {fileID: 7335635173462863720}
+  - {fileID: 6171189358640153346}
+  - {fileID: 6381651366895376865}
+  - {fileID: 6421317086724766513}
 --- !u!136 &8494838714237910326
 CapsuleCollider:
   m_ObjectHideFlags: 0

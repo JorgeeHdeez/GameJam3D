@@ -38,6 +38,8 @@ namespace Enemy.Runtime
         [SerializeField] private float _suspiciousThreshold = 0.4f;
         [SerializeField] private float _alertedThreshold = 0.95f;
         [SerializeField] private float _pingDetectionBump = 0.5f;
+        [Tooltip("Continuous hearing time (s) before the enemy commits to investigating the sound.")]
+        [SerializeField] private float _hearingReactionTime = 0.5f;
 
         #endregion
 
@@ -61,8 +63,23 @@ namespace Enemy.Runtime
             _detectionLevel = 0.0f;
             _currentNoiseRadius = 0.0f;
             _currentState = PerceptionState.Unaware;
+            _hearingTimer = 0.0f;
+            _hasPendingHeard = false;
 
             if (_stateChannel != null) _stateChannel.Raise(_currentState);
+        }
+
+        /// <summary>
+        /// Hands out a fresh "go look here" cue raised by sustained hearing, consuming
+        /// it so it fires once per commit. Returns false when there is nothing pending.
+        /// </summary>
+        public bool TryConsumeHeardPosition(out Vector3 position)
+        {
+            position = _pendingHeardPosition;
+            if (!_hasPendingHeard) return false;
+
+            _hasPendingHeard = false;
+            return true;
         }
 
         public void Tick(float deltaTime)
@@ -83,6 +100,7 @@ namespace Enemy.Runtime
                 _detectionLevel = Mathf.MoveTowards(_detectionLevel, 0.0f, _decayPerSecond * deltaTime);
             }
 
+            UpdateHearingCue(hears, deltaTime);
             UpdateState();
         }
 
@@ -119,6 +137,9 @@ namespace Enemy.Runtime
         private float _detectionLevel;
         private float _currentNoiseRadius;
         private PerceptionState _currentState = PerceptionState.Unaware;
+        private float _hearingTimer;
+        private Vector3 _pendingHeardPosition;
+        private bool _hasPendingHeard;
 
         #endregion
 
@@ -126,6 +147,26 @@ namespace Enemy.Runtime
         #region Private Methods
 
         private void OnNoiseRaised(float radius) => _currentNoiseRadius = radius;
+
+        // Sustained hearing arms a one-shot "investigate" cue at the target's current
+        // position, then re-arms: while the player keeps making noise the cue fires
+        // periodically, so a listening patrol keeps refreshing its target and follows
+        // the sound. Going quiet stops the cues and lets the patrol give up and resume.
+        private void UpdateHearingCue(bool hears, float deltaTime)
+        {
+            if (!hears)
+            {
+                _hearingTimer = 0.0f;
+                return;
+            }
+
+            _hearingTimer += deltaTime;
+            if (_hearingTimer < _hearingReactionTime) return;
+
+            _hearingTimer = 0.0f;
+            _pendingHeardPosition = _target.position;
+            _hasPendingHeard = true;
+        }
 
         // A heard knock spikes the detection meter toward suspicion, so the gauge
         // reacts even though the sound is momentary.

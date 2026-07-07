@@ -36,6 +36,15 @@ namespace Enemy.Runtime
         {
             if (IsAlerted()) return;
 
+            // A sustained sound sends the patrol to investigate where the player was
+            // heard; repeated cues refresh the target so it trails the noise.
+            if (_perception != null && _perception.TryConsumeHeardPosition(out Vector3 heard))
+            {
+                _investigateTarget = heard;
+                _hasInvestigateTarget = true;
+                _investigateTimer = 0.0f;
+            }
+
             if (_hasInvestigateTarget)
             {
                 Investigate(deltaTime);
