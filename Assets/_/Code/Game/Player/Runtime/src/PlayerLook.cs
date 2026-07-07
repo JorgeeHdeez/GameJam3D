@@ -21,6 +21,7 @@ namespace Player.Runtime
 
         [SerializeField] private UpdateManager _updateManager;
         [SerializeField] private PlayerInputReader _input;
+        [SerializeField] private PlayerController _playerController;
         [SerializeField] private Transform _cameraPivot;
 
         [Header("Sensitivity")]
@@ -40,11 +41,36 @@ namespace Player.Runtime
 
         public void Tick(float deltaTime)
         {
+            // In cover the camera rig owns the pivot rotation (wall-aligned framing),
+            // so free-look yields to avoid two systems fighting over it. On cover exit
+            // the rig hands the orientation back via AdoptLook, so this resumes without
+            // a jump.
+            if (_playerController != null && _playerController.IsInCover) return;
+
             Vector2 look = ResolveLookDelta(deltaTime);
             if (look.sqrMagnitude < LookThresholdSqr) return;
 
             transform.Rotate(Vector3.up, look.x, Space.World);
             ApplyPitch(look.y);
+        }
+
+        /// <summary>
+        /// Snaps free-look to match a world look orientation, so control can be handed
+        /// back seamlessly (e.g. when leaving cover) without the view - or the
+        /// body-relative movement axes - jumping. Splits the orientation into body yaw
+        /// and camera pitch, exactly how free-look stores them.
+        /// </summary>
+        public void AdoptLook(Quaternion worldLook)
+        {
+            Vector3 forward = worldLook * Vector3.forward;
+
+            Vector3 flat = forward;
+            flat.y = 0.0f;
+            if (flat.sqrMagnitude > LookThresholdSqr) transform.rotation = Quaternion.LookRotation(flat.normalized, Vector3.up);
+
+            _pitch = Mathf.Clamp(-Mathf.Asin(Mathf.Clamp(forward.y, -1.0f, 1.0f)) * Mathf.Rad2Deg, _minPitch, _maxPitch);
+
+            if (_cameraPivot != null) _cameraPivot.localRotation = Quaternion.Euler(_pitch, 0.0f, 0.0f);
         }
 
         #endregion
