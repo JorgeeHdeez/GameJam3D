@@ -1,0 +1,1 @@
+{"name":"Interractions.Editor","rootNamespace":"Interractions.Editor","references":["Core.Editor","Core.Runtime"],"includePlatforms":["Editor"],"excludePlatforms":[],"allowUnsafeCode":false,"overrideReferences":false,"precompiledReferences":[],"autoReferenced":true,"defineConstraints":[],"versionDefines":[],"noEngineReferences":false}
