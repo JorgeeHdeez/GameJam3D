@@ -3,8 +3,8 @@
     "rootNamespace": "Interractions.Runtime",
     "references": [
         "Core.Runtime",
-        "PrimeTween.Runtime",
-        "Unity.InputSystem"
+        "Unity.InputSystem",
+        "PrimeTween.Runtime"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
