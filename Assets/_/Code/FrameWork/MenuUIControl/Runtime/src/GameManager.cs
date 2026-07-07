@@ -12,7 +12,14 @@ namespace MenuUiControl.Runtime
 
         private void Awake()
         {
+            if (Instance != null)
+            {
+                Destroy(gameObject);
+                return;
+            }
+
             Instance = this;
+            DontDestroyOnLoad(gameObject);
             EnsureEventSystem();
         }
 
@@ -28,27 +35,22 @@ namespace MenuUiControl.Runtime
         #endregion
 
 
-        #region Main API
+        #region Main
 
         public void SetState(GameState newState)
         {
             if (newState == CurrentState) return;
             CurrentState = newState;
+
             Time.timeScale = (newState == GameState.Paused
                 || newState == GameState.GameOver
                 || newState == GameState.Won) ? 0f : 1f;
+
             OnGameStateChanged?.Invoke(CurrentState);
         }
 
-        public void Pause() => SetState(GameState.Paused);
-        public void Resume() => SetState(GameState.Playing);
-        public void GameOver() => SetState(GameState.GameOver);
-        public void Win() => SetState(GameState.Won);
-
-        public void OnPlayPause()
+        public void TogglePause()
         {
-            var uiManager = UIManager.Instance;
-            if (uiManager != null && !uiManager.CanPause) return;
             if (CurrentState != GameState.Playing && CurrentState != GameState.Paused) return;
             SetState(CurrentState == GameState.Paused ? GameState.Playing : GameState.Paused);
         }
@@ -71,10 +73,10 @@ namespace MenuUiControl.Runtime
         {
             if (EventSystem.current != null) return;
 
-            var eventSystem = new GameObject("EventSystem");
-            eventSystem.AddComponent<EventSystem>();
-            eventSystem.AddComponent<InputSystemUIInputModule>();
-            Debug.Log("[GAME MANAGER]: EventSystem créé automatiquement");
+            var go = new GameObject("EventSystem");
+            go.AddComponent<EventSystem>();
+            go.AddComponent<InputSystemUIInputModule>();
+            DontDestroyOnLoad(go);
         }
 
         #endregion

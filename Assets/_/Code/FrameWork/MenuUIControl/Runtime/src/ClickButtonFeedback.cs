@@ -38,7 +38,7 @@ namespace MenuUiControl.Runtime
         #endregion
 
 
-        #region Pointer Events
+        #region Main
 
         public void OnPointerDown(PointerEventData eventData) => Animate(_normalScale * m_pressedScale, m_pressDuration);
         public void OnPointerUp(PointerEventData eventData) => Animate(_normalScale, m_releaseDuration);
