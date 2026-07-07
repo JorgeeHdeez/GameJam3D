@@ -79,6 +79,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: fae2feced059f8949becb016695ab379, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8986187115774181839}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: fae2feced059f8949becb016695ab379, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6737750965187620179}
   m_SourcePrefab: {fileID: 100100000, guid: fae2feced059f8949becb016695ab379, type: 3}
 --- !u!95 &3151651352150229494 stripped
 Animator:
@@ -158,10 +161,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Enemy.Runtime::Enemy.Runtime.EnemyPatrol
   _updateManager: {fileID: 0}
   _perception: {fileID: 1199052190067235058}
+  _agent: {fileID: 6737750965187620179}
   _noisePingChannel: {fileID: 11400000, guid: be629f7390a310c479c45d870a31a29d, type: 2}
   _waypoints: []
-  _moveSpeed: 2
-  _turnSpeed: 360
+  _patrolSpeed: 2
   _arriveDistance: 0.3
   _waitTime: 1
   _investigateLookTime: 2
@@ -179,10 +182,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Enemy.Runtime::Enemy.Runtime.EnemyChase
   _updateManager: {fileID: 0}
   _perception: {fileID: 1199052190067235058}
+  _agent: {fileID: 6737750965187620179}
   _target: {fileID: 0}
   _catchChannel: {fileID: 11400000, guid: 28a772f9a3af4624fbaa021f466ce898, type: 2}
   _chaseSpeed: 3.5
-  _turnSpeed: 540
   _catchDistance: 0.6
 --- !u!136 &8986187115774181839
 CapsuleCollider:
@@ -207,3 +210,25 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0.09}
+--- !u!195 &6737750965187620179
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8509294540824690998}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4

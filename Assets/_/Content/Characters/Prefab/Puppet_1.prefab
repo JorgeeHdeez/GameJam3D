@@ -79,6 +79,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3cddb679e9696384b981e124ea0bc5ac, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8285741785427212874}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3cddb679e9696384b981e124ea0bc5ac, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8220602065453426394}
   m_SourcePrefab: {fileID: 100100000, guid: 3cddb679e9696384b981e124ea0bc5ac, type: 3}
 --- !u!1 &4091189542857089692 stripped
 GameObject:
@@ -153,10 +156,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Enemy.Runtime::Enemy.Runtime.EnemyPatrol
   _updateManager: {fileID: 0}
   _perception: {fileID: 6121296725076810634}
+  _agent: {fileID: 8220602065453426394}
   _noisePingChannel: {fileID: 11400000, guid: be629f7390a310c479c45d870a31a29d, type: 2}
   _waypoints: []
-  _moveSpeed: 2
-  _turnSpeed: 360
+  _patrolSpeed: 2
   _arriveDistance: 0.3
   _waitTime: 1
   _investigateLookTime: 2
@@ -174,10 +177,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Enemy.Runtime::Enemy.Runtime.EnemyChase
   _updateManager: {fileID: 0}
   _perception: {fileID: 6121296725076810634}
+  _agent: {fileID: 8220602065453426394}
   _target: {fileID: 0}
   _catchChannel: {fileID: 11400000, guid: 28a772f9a3af4624fbaa021f466ce898, type: 2}
   _chaseSpeed: 3.5
-  _turnSpeed: 540
   _catchDistance: 0.6
 --- !u!136 &8285741785427212874
 CapsuleCollider:
@@ -202,6 +205,28 @@ CapsuleCollider:
   m_Height: 1.51
   m_Direction: 1
   m_Center: {x: -0.3, y: 0.77, z: 0.3}
+--- !u!195 &8220602065453426394
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4091189542857089692}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!95 &7308549784712225372 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 3cddb679e9696384b981e124ea0bc5ac, type: 3}
