@@ -5,14 +5,15 @@ namespace Player.Runtime
 {
     /// <summary>
     /// Orchestrates the first-person player character: reads input, resolves the
-    /// active state, then drives movement, camera lean and stealth noise. Receives
-    /// its tick from the <see cref="UpdateManager"/> instead of MonoBehaviour.Update,
-    /// and gets all of its collaborators injected through the Inspector.
-    /// Adapted from the third-person controller: movement is body-forward based
-    /// (mouse-look rotates the body yaw elsewhere, so the body no longer turns to
-    /// face movement direction), cover entry/exit is an explicit button press
-    /// instead of automatic wall-push detection, and corner peek offsets a local
-    /// camera pivot instead of repositioning an external third-person camera rig.
+    /// active state, then drives movement and stealth noise. Receives its tick from
+    /// the <see cref="UpdateManager"/> instead of MonoBehaviour.Update, and gets all
+    /// of its collaborators injected through the Inspector.
+    /// Adapted from the third-person controller: movement is body-relative (mouse-look
+    /// rotates the body yaw in <see cref="PlayerLook"/>, so the body never turns to
+    /// face its movement direction) and cover entry/exit is an explicit button press
+    /// instead of automatic wall-push detection. All camera framing (crouch/crawl
+    /// height, cover glue and corner peek) is owned by <see cref="PlayerCameraRig"/>;
+    /// this controller only exposes the cover state the rig reads.
     /// </summary>
     public sealed class PlayerController : MonoBehaviour, IUpdatable
     {
@@ -22,15 +23,9 @@ namespace Player.Runtime
         [SerializeField] private PlayerInputReader _input;
         [SerializeField] private PlayerMotor _motor;
         [SerializeField] private WallSensor _wallSensor;
-        [SerializeField] private CornerSensor _cornerSensor;
-        [SerializeField] private PlayerAnimatorDriver _animatorDriver;
         [SerializeField] private NoiseEmitter _noiseEmitter;
         [SerializeField] private CoverContextEventChannelSO _coverContextChannel;
-        [SerializeField] private VoidEventChannelSO _alarmChannel;
-
-        [Header("First-Person Camera")]
-        [Tooltip("Child transform the FPS camera (or its Cinemachine vcam) follows. Its rest local position is captured on Awake.")]
-        [SerializeField] private Transform _cameraPivot;
+        [SerializeField] private VoidEventChannelSO _caughtChannel;
 
         [Header("Movement Speeds (m/s)")]
         [SerializeField] private float _runSpeed = 5.5f;
@@ -43,7 +38,7 @@ namespace Player.Runtime
 
         [Header("Posture Transition Locks (s)")]
         [Tooltip("Movement is suppressed for this long when the posture changes, so the " +
-                 "character cannot run at full speed while a stand-up / cover transition clip plays.")]
+                 "character cannot run at full speed while a stand-up / cover transition plays.")]
         [SerializeField] private float _crawlEnterLock = 0.8f;
         [SerializeField] private float _crawlExitLock = 0.8f;
         [SerializeField] private float _crouchEnterLock = 0.4f;
@@ -54,11 +49,6 @@ namespace Player.Runtime
         [Header("Wall Hug")]
         [SerializeField] private float _coverFacingDeadzone = 0.5f;
 
-        [Header("Corner Peek (Camera Lean)")]
-        [SerializeField] private float _peekSpeed = 4.0f;
-        [SerializeField] private float _peekSideShift = 0.5f;
-        [SerializeField] private float _peekForwardShift = 0.3f;
-
         #endregion
 
 
@@ -67,12 +57,25 @@ namespace Player.Runtime
         /// <summary>Current logical state of the player.</summary>
         public PlayerState CurrentState => _currentState;
 
+        /// <summary>True while the player is hugging a wall (in cover).</summary>
+        public bool IsInCover => _currentState == PlayerState.WallHugging;
+
+        /// <summary>Averaged normal of the wall being hugged (valid while <see cref="IsInCover"/>).</summary>
+        public Vector3 CoverWallNormal => _wallSensor.WallNormal;
+
+        /// <summary>
+        /// Side the player is currently sneaking toward along the wall: true = the
+        /// wall's right (+wallRight), false = its left. Drives which way the camera
+        /// looks and which corner it peeks around.
+        /// </summary>
+        public bool CoverFacingRight => _coverFacingRight;
+
         #endregion
 
 
         #region Public API
 
-        /// <summary>Forces or clears the knocked-out state (e.g. when the player is hit).</summary>
+        /// <summary>Forces or clears the knocked-out state (e.g. when the player is caught).</summary>
         public void SetKnockedOut(bool value) => _isKnockedOut = value;
 
         public void Tick(float deltaTime)
@@ -105,11 +108,6 @@ namespace Player.Runtime
 
             ApplyMovement(moveDirection, inputMagnitude, rawInput, isMoving, movementLocked, deltaTime);
 
-            if (_animatorDriver != null)
-            {
-                _animatorDriver.Apply(_currentState, _input.CrouchActive, ResolveLocomotionMagnitude(_currentState, inputMagnitude, isMoving), deltaTime);
-            }
-
             _noiseEmitter.Emit(_currentState);
         }
 
@@ -118,25 +116,20 @@ namespace Player.Runtime
 
         #region Unity Callbacks
 
-        private void Awake()
-        {
-            if (_cameraPivot != null) _pivotRestLocalPosition = _cameraPivot.localPosition;
-        }
-
         private void OnEnable()
         {
             _updateManager.Register(this);
 
-            if (_alarmChannel == null) return;
-            _alarmChannel.OnEventRaised += OnAlarmRaised;
+            if (_caughtChannel == null) return;
+            _caughtChannel.OnEventRaised += OnCaught;
         }
 
         private void OnDisable()
         {
             _updateManager.Unregister(this);
 
-            if (_alarmChannel == null) return;
-            _alarmChannel.OnEventRaised -= OnAlarmRaised;
+            if (_caughtChannel == null) return;
+            _caughtChannel.OnEventRaised -= OnCaught;
         }
 
         #endregion
@@ -149,12 +142,9 @@ namespace Player.Runtime
         private PlayerState _previousState = PlayerState.Idle;
         private float _transitionLockTimer;
         private bool _isKnockedOut;
-        private float _peekAmount;
-        private float _coverAdvance;
         private bool _wasInCover;
         private bool _coverFacingRight;
         private bool _coverFlipHeldPrev;
-        private Vector3 _pivotRestLocalPosition;
 
         #endregion
 
@@ -168,10 +158,13 @@ namespace Player.Runtime
 
         #region Private Methods
 
-        private void OnAlarmRaised() => SetKnockedOut(true);
+        // Being detected no longer freezes the player: the game is about staying in
+        // control and fleeing to a hiding spot. Only actually being caught by a
+        // chasing enemy (the catch channel, raised by EnemyChase) knocks the player out.
+        private void OnCaught() => SetKnockedOut(true);
 
-        // FPS movement is body-relative: mouse-look rotates the player's yaw
-        // elsewhere (the body itself does not pitch), so the stick's forward/right
+        // FPS movement is body-relative: mouse-look rotates the player's yaw in
+        // PlayerLook (the body itself does not pitch), so the stick's forward/right
         // axes map directly onto the body's own axes without any ground projection.
         private Vector3 ResolveMoveDirection(Vector2 rawInput) =>
             transform.right * rawInput.x + transform.forward * rawInput.y;
@@ -204,24 +197,20 @@ namespace Player.Runtime
             _motor.Move(moveDirection.normalized, isMoving ? speed : 0.0f, deltaTime);
         }
 
-        // While hugging, the character keeps its back to the wall (facing outward).
-        // Controls are wall-relative, not camera-relative: North advances along the
-        // current sneak direction, South flips that direction. West/East no longer
-        // exit cover here since exit is now the explicit cover button (see
-        // ResolveWantsCover), which keeps strafing free for peeking and aiming.
+        // While hugging, movement is wall-relative, not body- or camera-relative:
+        // North advances along the current sneak direction, South flips it. The body
+        // is intentionally NOT rotated in cover - the camera rig frames along the wall
+        // on its own, and leaving the body yaw untouched keeps free-look seamless when
+        // cover is released. West/East stay free (exit is the explicit cover button).
         private void ApplyWallHugMovement(Vector2 rawInput, bool movementLocked, float deltaTime)
         {
             Vector3 wallNormal = _wallSensor.WallNormal;
             Vector3 wallRight = Vector3.Cross(Vector3.up, wallNormal);
 
             // South (pull back) flips the sneak direction, edge-triggered so a held
-            // stick flips only once per press. The flip fires the one-shot turn clip.
+            // stick flips only once per press.
             bool flipHeld = rawInput.y < -_coverFacingDeadzone;
-            if (flipHeld && !_coverFlipHeldPrev)
-            {
-                _coverFacingRight = !_coverFacingRight;
-                if (_animatorDriver != null) _animatorDriver.TriggerCoverTurn();
-            }
+            if (flipHeld && !_coverFlipHeldPrev) _coverFacingRight = !_coverFacingRight;
             _coverFlipHeldPrev = flipHeld;
 
             Vector3 travel = _coverFacingRight ? wallRight : -wallRight;
@@ -229,63 +218,26 @@ namespace Player.Runtime
             bool isAdvancing = advance > MoveThreshold;
 
             _motor.Move(isAdvancing ? travel : Vector3.zero, isAdvancing ? _wallHugSpeed * advance : 0.0f, deltaTime);
-            _motor.FaceTowards(wallNormal, deltaTime);
-
-            // Advance magnitude (0..1) freezes the cover-sneak clip when idle via the
-            // state's Speed multiplier; facing picks the left/right sneak, look and turn.
-            _coverAdvance = advance;
-
-            UpdateCornerPeek(isAdvancing, deltaTime);
-
-            float facing = _coverFacingRight ? 1.0f : -1.0f;
-            if (_animatorDriver != null) _animatorDriver.SetCoverPeek(_peekAmount, facing);
-        }
-
-        // Leans the first-person camera pivot sideways (and slightly forward) around
-        // an available outer corner. Offsets are expressed in the pivot's own local
-        // axes, so they work regardless of the body's current world rotation - no
-        // world-space camera repositioning or external rig is needed in first person.
-        private void UpdateCornerPeek(bool isAdvancing, float deltaTime)
-        {
-            bool cornerAvailable = _cornerSensor != null &&
-                (_coverFacingRight ? _cornerSensor.HasRightCorner : _cornerSensor.HasLeftCorner);
-            bool wantsPeek = cornerAvailable && !isAdvancing;
-
-            _peekAmount = Mathf.MoveTowards(_peekAmount, wantsPeek ? 1.0f : 0.0f, _peekSpeed * deltaTime);
-
-            if (_cornerSensor != null) _cornerSensor.Check(transform, _wallSensor.WallNormal);
-            if (_cameraPivot == null) return;
-
-            float facing = _coverFacingRight ? 1.0f : -1.0f;
-            Vector3 lean = Vector3.right * (facing * _peekSideShift * _peekAmount) + Vector3.forward * (_peekForwardShift * _peekAmount);
-            _cameraPivot.localPosition = _pivotRestLocalPosition + lean;
         }
 
         // Broadcasts cover enter/exit transitions so decoupled listeners (prompt UI,
-        // noise ping input) can react without a direct reference to the player. Unlike
-        // the third-person version this only fires on transitions, not every frame,
-        // since the camera itself is no longer driven through this channel.
+        // noise ping input) can react without a direct reference to the player. Fires
+        // only on transitions, not every frame.
         private void UpdateCoverContext(bool isInCover)
         {
             if (isInCover == _wasInCover) return;
 
             _wasInCover = isInCover;
 
-            if (!isInCover)
-            {
-                _peekAmount = 0.0f;
-                _coverFlipHeldPrev = false;
-                if (_animatorDriver != null) _animatorDriver.SetCoverPeek(0.0f, _coverFacingRight ? 1.0f : -1.0f);
-                if (_cameraPivot != null) _cameraPivot.localPosition = _pivotRestLocalPosition;
-            }
+            if (!isInCover) _coverFlipHeldPrev = false;
 
             if (_coverContextChannel == null) return;
             _coverContextChannel.Raise(new CoverContext(isInCover, transform.position, transform.position));
         }
 
-        // While hugging, probe straight into the wall using its cached normal, so
-        // detection stays stable while the body rotates to face outward. Otherwise
-        // probe ahead of the character to acquire a new wall.
+        // While hugging, probe straight into the wall using its cached normal so
+        // detection stays stable. Otherwise probe ahead of the character to acquire
+        // a new wall.
         private Vector3 ResolveWallProbeDirection() =>
             _currentState == PlayerState.WallHugging ? -_wallSensor.WallNormal : transform.forward;
 
@@ -309,7 +261,7 @@ namespace Player.Runtime
         }
 
         // Starts a movement lock whenever the posture changes, then counts it down.
-        // The lock duration is sized to the matching transition clip so the character
+        // The lock duration is sized to the matching transition so the character
         // cannot move while standing up or entering/leaving cover.
         private void UpdateTransitionLock(float deltaTime)
         {
@@ -333,20 +285,6 @@ namespace Player.Runtime
             if (from == PlayerState.WallHugging) return _coverExitLock;
 
             return 0.0f;
-        }
-
-        // Normalized planar speed (0..1) fed to the locomotion blend tree. Standing and
-        // crawling report the analog stick tilt directly, so their clips play at a rate
-        // proportional to movement and freeze when idle (via the state Speed multiplier).
-        // Cover reports its own advance, and everything returns 0 when idle or knocked
-        // out so the trees settle on their resting pose.
-        private float ResolveLocomotionMagnitude(PlayerState state, float inputMagnitude, bool isMoving)
-        {
-            if (state == PlayerState.KnockedOut) return 0.0f;
-            if (!isMoving) return 0.0f;
-            if (state == PlayerState.WallHugging) return _coverAdvance;
-
-            return inputMagnitude;
         }
 
         #endregion
