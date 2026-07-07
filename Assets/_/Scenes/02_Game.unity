@@ -4031,6 +4031,71 @@ Mesh:
       - serializedVersion: 1
         m_IndexStart: 0
         m_IndexCount: 0
+--- !u!1 &215527930
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 215527933}
+  - component: {fileID: 215527932}
+  - component: {fileID: 215527931}
+  m_Layer: 0
+  m_Name: RewindVolume
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &215527931
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 215527930}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4dd55b8630fe59548ae94a07f72078bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Presentation.Runtime::Presentation.Runtime.RewindVisualController
+  _updateManager: {fileID: 677410017}
+  _gameState: {fileID: 11400000, guid: 6b50f070ce0416d43bc66996ed399f65, type: 2}
+  _transitionSpeed: 5
+--- !u!114 &215527932
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 215527930}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Core.Runtime::UnityEngine.Rendering.Volume
+  m_IsGlobal: 1
+  priority: 0
+  blendDistance: 0
+  weight: 0
+  sharedProfile: {fileID: 11400000, guid: 9a0eb00d9b33320499a3c496205edd85, type: 2}
+--- !u!4 &215527933
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 215527930}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -5.11049, y: 1.7, z: 9.09374}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &220480639 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2751533408678709985, guid: e5302a0c85ea2c243b3bb3a6f0f17716, type: 3}
@@ -46622,6 +46687,7 @@ SceneRoots:
   - {fileID: 330585546}
   - {fileID: 1160532352}
   - {fileID: 706425736}
+  - {fileID: 215527933}
   - {fileID: 273499246}
   - {fileID: 410087041}
   - {fileID: 832575519}
