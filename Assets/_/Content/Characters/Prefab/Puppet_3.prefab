@@ -1,5 +1,67 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &1824275935548118342
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 2773650457978465627}
+    m_Modifications:
+    - target: {fileID: 4871412805686559664, guid: cefc81da54f034846848997eb5abec7d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.04543972
+      objectReference: {fileID: 0}
+    - target: {fileID: 4871412805686559664, guid: cefc81da54f034846848997eb5abec7d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.441
+      objectReference: {fileID: 0}
+    - target: {fileID: 4871412805686559664, guid: cefc81da54f034846848997eb5abec7d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.31
+      objectReference: {fileID: 0}
+    - target: {fileID: 4871412805686559664, guid: cefc81da54f034846848997eb5abec7d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4871412805686559664, guid: cefc81da54f034846848997eb5abec7d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4871412805686559664, guid: cefc81da54f034846848997eb5abec7d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4871412805686559664, guid: cefc81da54f034846848997eb5abec7d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4871412805686559664, guid: cefc81da54f034846848997eb5abec7d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4871412805686559664, guid: cefc81da54f034846848997eb5abec7d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4871412805686559664, guid: cefc81da54f034846848997eb5abec7d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7638613195100345505, guid: cefc81da54f034846848997eb5abec7d, type: 3}
+      propertyPath: m_Name
+      value: P_RedEye
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: cefc81da54f034846848997eb5abec7d, type: 3}
+--- !u!4 &6542495985021425398 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4871412805686559664, guid: cefc81da54f034846848997eb5abec7d, type: 3}
+  m_PrefabInstance: {fileID: 1824275935548118342}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2447500892289272496
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -66,7 +128,10 @@ PrefabInstance:
       objectReference: {fileID: 9100000, guid: 4def955b00b3c0841a955290850d4eea, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: bed411f24ffab5a42ad5eacf74b63b71, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6542495985021425398}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: bed411f24ffab5a42ad5eacf74b63b71, type: 3}
       insertIndex: -1
@@ -90,6 +155,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 5482191885898257452}
   m_SourcePrefab: {fileID: 100100000, guid: bed411f24ffab5a42ad5eacf74b63b71, type: 3}
+--- !u!4 &2773650457978465627 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: bed411f24ffab5a42ad5eacf74b63b71, type: 3}
+  m_PrefabInstance: {fileID: 2447500892289272496}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &3257840626482788321 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: bed411f24ffab5a42ad5eacf74b63b71, type: 3}
@@ -168,7 +238,7 @@ MonoBehaviour:
   _target: {fileID: 0}
   _catchChannel: {fileID: 11400000, guid: 28a772f9a3af4624fbaa021f466ce898, type: 2}
   _chaseSpeed: 3.5
-  _catchDistance: 1.2
+  _catchDistance: 1.5
 --- !u!114 &7335635173462863720
 MonoBehaviour:
   m_ObjectHideFlags: 0
