@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: fae2feced059f8949becb016695ab379, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -4.35
+      value: -0.05
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: fae2feced059f8949becb016695ab379, type: 3}
       propertyPath: m_LocalPosition.y
@@ -18,7 +18,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: fae2feced059f8949becb016695ab379, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 2.45
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: fae2feced059f8949becb016695ab379, type: 3}
       propertyPath: m_LocalRotation.w
@@ -140,7 +140,7 @@ MonoBehaviour:
   _obstacleLayer:
     serializedVersion: 2
     m_Bits: 73
-  _sightGainPerSecond: 1.5
+  _sightGainPerSecond: 0.3
   _hearingGainPerSecond: 0.6
   _decayPerSecond: 0.4
   _hearingCap: 0.7
@@ -163,10 +163,16 @@ MonoBehaviour:
   _perception: {fileID: 1199052190067235058}
   _agent: {fileID: 6737750965187620179}
   _noisePingChannel: {fileID: 11400000, guid: be629f7390a310c479c45d870a31a29d, type: 2}
-  _waypoints: []
-  _patrolSpeed: 2
+  _waypoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  _patrolSpeed: 1
   _arriveDistance: 0.3
-  _waitTime: 1
+  _waitTime: 0
   _investigateLookTime: 2
 --- !u!114 &8666286795447273758
 MonoBehaviour:
