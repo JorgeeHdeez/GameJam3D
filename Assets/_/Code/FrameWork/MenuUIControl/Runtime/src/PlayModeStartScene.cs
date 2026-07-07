@@ -1,7 +1,7 @@
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace MenuUiControl.Editor
 {
@@ -31,36 +31,69 @@ namespace MenuUiControl.Editor
                     return;
                 }
 
-                _previousSceneSetup = EditorSceneManager.GetSceneManagerSetup();
+                var setup = EditorSceneManager.GetSceneManagerSetup();
+                var paths = new List<string>();
+                var loaded = new List<bool>();
+                var active = new List<string>();
 
-                Debug.Log($"[PLAY MODE]: Setup sauvegardé — {_previousSceneSetup.Length} scène(s) :");
-                foreach (var s in _previousSceneSetup)
-                    Debug.Log($"  → {s.path} | isLoaded={s.isLoaded} | isActive={s.isActive}");
+                string activePath = "";
+                foreach (var s in setup)
+                {
+                    paths.Add(s.path);
+                    loaded.Add(s.isLoaded);
+                    if (s.isActive) activePath = s.path;
+                }
+
+                SessionState.SetString(_sessionKey, string.Join("|", paths));
+                SessionState.SetString(_sessionLoadedKey, string.Join("|", loaded));
+                SessionState.SetString(_sessionActiveKey, activePath);
+
+                Debug.Log($"[PLAY MODE]: {paths.Count} scène(s) sauvegardées en SessionState");
 
                 EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo();
                 EditorSceneManager.OpenScene(EditorBuildSettings.scenes[0].path, OpenSceneMode.Single);
             }
             else if (state == PlayModeStateChange.EnteredEditMode)
             {
-                Debug.Log($"[PLAY MODE]: EnteredEditMode — setup à restaurer : {(_previousSceneSetup == null ? "NULL" : _previousSceneSetup.Length.ToString())}");
+                var pathsRaw = SessionState.GetString(_sessionKey, "");
+                var loadedRaw = SessionState.GetString(_sessionLoadedKey, "");
+                var activePath = SessionState.GetString(_sessionActiveKey, "");
 
-                if (_previousSceneSetup == null || _previousSceneSetup.Length == 0) return;
+                Debug.Log($"[PLAY MODE]: EnteredEditMode — paths={pathsRaw}");
+
+                if (string.IsNullOrEmpty(pathsRaw)) return;
+
+                var paths = pathsRaw.Split('|');
+                var loadedArr = loadedRaw.Split('|');
 
                 var valid = new List<SceneSetup>();
-                foreach (var setup in _previousSceneSetup)
+                for (int i = 0; i < paths.Length; i++)
                 {
-                    var guid = AssetDatabase.AssetPathToGUID(setup.path);
-                    Debug.Log($"  → {setup.path} | guid={guid}");
-                    if (!string.IsNullOrEmpty(guid))
-                        valid.Add(setup);
-                    else
-                        Debug.LogWarning($"[PLAY MODE]: Scène introuvable ignorée : {setup.path}");
+                    var path = paths[i];
+                    if (string.IsNullOrEmpty(path)) continue;
+                    if (string.IsNullOrEmpty(AssetDatabase.AssetPathToGUID(path)))
+                    {
+                        Debug.LogWarning($"[PLAY MODE]: Scène introuvable ignorée : {path}");
+                        continue;
+                    }
+
+                    bool isLoaded = i < loadedArr.Length && loadedArr[i] == "True";
+                    valid.Add(new SceneSetup
+                    {
+                        path = path,
+                        isLoaded = isLoaded,
+                        isActive = path == activePath
+                    });
                 }
 
-                Debug.Log($"[PLAY MODE]: {valid.Count} scène(s) valide(s) à restaurer");
+                Debug.Log($"[PLAY MODE]: {valid.Count} scène(s) restaurées");
 
                 if (valid.Count > 0)
                     EditorSceneManager.RestoreSceneManagerSetup(valid.ToArray());
+
+                SessionState.EraseString(_sessionKey);
+                SessionState.EraseString(_sessionLoadedKey);
+                SessionState.EraseString(_sessionActiveKey);
             }
         }
 
@@ -69,7 +102,9 @@ namespace MenuUiControl.Editor
 
         #region Private
 
-        private static SceneSetup[] _previousSceneSetup;
+        private const string _sessionKey = "PlayModeStartScene_paths";
+        private const string _sessionLoadedKey = "PlayModeStartScene_loaded";
+        private const string _sessionActiveKey = "PlayModeStartScene_active";
 
         #endregion
 
