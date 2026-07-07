@@ -1,0 +1,8 @@
+﻿<Solution>
+  <Project Path="Player.Runtime.csproj" />
+  <Project Path="Enemy.Runtime.csproj" />
+  <Project Path="Core.Editor.csproj" />
+  <Project Path="Core.Runtime.csproj" />
+  <Project Path="ManageFolder.Editor.csproj" />
+  <Project Path="Enemy.Editor.csproj" />
+</Solution>
