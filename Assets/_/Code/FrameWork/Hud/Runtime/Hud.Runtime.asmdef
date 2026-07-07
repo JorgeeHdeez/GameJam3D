@@ -1,0 +1,16 @@
+{
+    "name": "Hud.Runtime",
+    "rootNamespace": "Hud.Runtime",
+    "references": [
+        "GUID:27eea57a07680174eb62e67ad5029789"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
