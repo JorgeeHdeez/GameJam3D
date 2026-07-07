@@ -1,0 +1,17 @@
+{
+    "name": "Presentation.Runtime",
+    "rootNamespace": "",
+    "references": [
+        "GUID:27eea57a07680174eb62e67ad5029789",
+        "GUID:df380645f10b7bc4b97d4f5eb6303d95"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
