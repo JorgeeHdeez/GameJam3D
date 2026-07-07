@@ -15,7 +15,7 @@ namespace MenuUiControl.Editor
 
         private void OnEnable()
         {
-            RefreshBuildScenes();
+            RefreshSceneNames();
             RefreshButtons();
         }
 
@@ -26,22 +26,36 @@ namespace MenuUiControl.Editor
 
         public override void OnInspectorGUI()
         {
-            DrawDefaultInspector();
+            var gm = (GameManager)target;
+            var so = serializedObject;
+            so.Update();
 
+            // Pause Action
+            EditorGUILayout.PropertyField(so.FindProperty("m_pauseAction"));
+
+            // Pause Scene — dropdown depuis Assets/_/Scenes
+            EditorGUILayout.Space(4);
+            var pauseSceneProp = so.FindProperty("m_pauseSceneName");
+            int currentIdx = _sceneNames.IndexOf(pauseSceneProp.stringValue);
+            if (currentIdx < 0) currentIdx = 0;
+            int newIdx = EditorGUILayout.Popup("Pause Scene", currentIdx, _sceneNames.ToArray());
+            if (newIdx != currentIdx)
+                pauseSceneProp.stringValue = _sceneNames[newIdx];
+
+            so.ApplyModifiedProperties();
+
+            // Scene Buttons
             EditorGUILayout.Space(8);
             EditorGUILayout.LabelField("Scene Buttons", EditorStyles.boldLabel);
             EditorGUILayout.Space(4);
 
             if (GUILayout.Button("⟳ Scanner les scènes ouvertes", GUILayout.Height(26)))
             {
-                RefreshBuildScenes();
+                RefreshSceneNames();
                 RefreshButtons();
             }
 
-            EditorGUILayout.LabelField(
-                $"{_buttons.Count} bouton(s) trouvé(s)",
-                EditorStyles.miniLabel);
-
+            EditorGUILayout.LabelField($"{_buttons.Count} bouton(s) trouvé(s)", EditorStyles.miniLabel);
             EditorGUILayout.Space(6);
 
             if (_buttons.Count == 0)
@@ -54,8 +68,8 @@ namespace MenuUiControl.Editor
             {
                 if (btn == null) continue;
 
-                var so = new SerializedObject(btn);
-                so.Update();
+                var btnSo = new SerializedObject(btn);
+                btnSo.Update();
 
                 EditorGUILayout.BeginVertical(EditorStyles.helpBox);
 
@@ -69,29 +83,30 @@ namespace MenuUiControl.Editor
 
                 EditorGUILayout.Space(2);
 
-                EditorGUILayout.PropertyField(so.FindProperty("m_action"));
+                EditorGUILayout.PropertyField(btnSo.FindProperty("m_action"));
 
-                var actionProp = so.FindProperty("m_action");
-                if ((SceneButtonAction)actionProp.enumValueIndex == SceneButtonAction.LoadScene)
+                var actionProp = btnSo.FindProperty("m_action");
+                var action = (SceneButtonAction)actionProp.enumValueIndex;
+
+                if (action == SceneButtonAction.LoadScene)
                 {
-                    var sceneNameProp = so.FindProperty("m_sceneName");
+                    var sceneNameProp = btnSo.FindProperty("m_sceneName");
+                    int idx = _sceneNames.IndexOf(sceneNameProp.stringValue);
+                    if (idx < 0) idx = 0;
+                    int nIdx = EditorGUILayout.Popup("Scène cible", idx, _sceneNames.ToArray());
+                    if (nIdx != idx)
+                        sceneNameProp.stringValue = _sceneNames[nIdx];
 
-                    int currentIdx = _buildSceneNames.IndexOf(sceneNameProp.stringValue);
-                    if (currentIdx < 0) currentIdx = 0;
-
-                    int newIdx = EditorGUILayout.Popup(
-                        "Scène cible",
-                        currentIdx,
-                        _buildSceneNames.ToArray());
-
-                    if (newIdx != currentIdx)
-                        sceneNameProp.stringValue = _buildSceneNames[newIdx];
-
-                    EditorGUILayout.PropertyField(so.FindProperty("m_isOverlay"));
-                    EditorGUILayout.PropertyField(so.FindProperty("m_setState"));
+                    EditorGUILayout.PropertyField(btnSo.FindProperty("m_isOverlay"));
+                    EditorGUILayout.PropertyField(btnSo.FindProperty("m_sortingOrder"));
+                    EditorGUILayout.PropertyField(btnSo.FindProperty("m_setState"));
+                }
+                else if (action == SceneButtonAction.UnloadSelf)
+                {
+                    EditorGUILayout.PropertyField(btnSo.FindProperty("m_setState"));
                 }
 
-                if (so.ApplyModifiedProperties())
+                if (btnSo.ApplyModifiedProperties())
                     EditorUtility.SetDirty(btn);
 
                 EditorGUILayout.EndVertical();
@@ -118,14 +133,15 @@ namespace MenuUiControl.Editor
             }
         }
 
-        private void RefreshBuildScenes()
+        private void RefreshSceneNames()
         {
-            _buildSceneNames.Clear();
+            _sceneNames.Clear();
 
-            foreach (var scene in EditorBuildSettings.scenes)
+            var guids = AssetDatabase.FindAssets("t:SceneAsset", new[] { "Assets/_/Scenes" });
+            foreach (var guid in guids)
             {
-                if (string.IsNullOrEmpty(scene.path)) continue;
-                _buildSceneNames.Add(Path.GetFileNameWithoutExtension(scene.path));
+                var path = AssetDatabase.GUIDToAssetPath(guid);
+                _sceneNames.Add(Path.GetFileNameWithoutExtension(path));
             }
         }
 
@@ -135,7 +151,7 @@ namespace MenuUiControl.Editor
         #region Private
 
         private List<SceneButton> _buttons = new();
-        private List<string> _buildSceneNames = new();
+        private List<string> _sceneNames = new();
 
         #endregion
 

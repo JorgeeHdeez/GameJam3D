@@ -7,7 +7,6 @@ namespace MenuUiControl.Runtime
     {
         LoadScene,
         UnloadSelf,
-        TogglePause,
         Quit
     }
 
@@ -20,6 +19,7 @@ namespace MenuUiControl.Runtime
         [SerializeField] private SceneButtonAction m_action;
         [SerializeField] private string m_sceneName;
         [SerializeField] private bool m_isOverlay;
+        [SerializeField] private int m_sortingOrder = 0;
         [SerializeField] private GameState m_setState = GameState.MainMenu;
 
         #endregion
@@ -52,12 +52,9 @@ namespace MenuUiControl.Runtime
                     break;
 
                 case SceneButtonAction.UnloadSelf:
+                    if (GameManager.Instance != null)
+                        GameManager.Instance.SetState(m_setState);
                     UnloadOwnerScene();
-                    if (GameManager.Instance != null) GameManager.Instance.TogglePause();
-                    break;
-
-                case SceneButtonAction.TogglePause:
-                    if (GameManager.Instance != null) GameManager.Instance.TogglePause();
                     break;
 
                 case SceneButtonAction.Quit:
@@ -79,9 +76,14 @@ namespace MenuUiControl.Runtime
                 GameManager.Instance.SetState(m_setState);
 
             if (m_isOverlay)
-                SceneManager.LoadSceneAsync(m_sceneName, LoadSceneMode.Additive);
+            {
+                var op = SceneManager.LoadSceneAsync(m_sceneName, LoadSceneMode.Additive);
+                op.completed += _ => ApplySortingOrder(m_sceneName, m_sortingOrder);
+            }
             else
+            {
                 SceneManager.LoadSceneAsync(m_sceneName, LoadSceneMode.Single);
+            }
         }
 
         private void UnloadOwnerScene()
@@ -89,6 +91,19 @@ namespace MenuUiControl.Runtime
             var scene = gameObject.scene;
             if (scene.isLoaded)
                 SceneManager.UnloadSceneAsync(scene);
+        }
+
+        private void ApplySortingOrder(string sceneName, int sortingOrder)
+        {
+            var scene = SceneManager.GetSceneByName(sceneName);
+            if (!scene.isLoaded) return;
+
+            foreach (var root in scene.GetRootGameObjects())
+            {
+                var canvas = root.GetComponent<Canvas>();
+                if (canvas != null)
+                    canvas.sortingOrder = sortingOrder;
+            }
         }
 
         #endregion
