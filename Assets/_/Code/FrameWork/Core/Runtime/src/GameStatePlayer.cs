@@ -5,7 +5,7 @@ namespace Core.Runtime
     /// triggered when the player is caught, or the terminal win state reached at the
     /// exit checkpoint.
     /// </summary>
-    public enum GameState
+    public enum GameStatePlayer
     {
         Playing,
         Rewinding,

@@ -36,7 +36,7 @@ namespace Player.Runtime
 
         public void Tick(float deltaTime)
         {
-            if (_gameState == null || _gameState.CurrentState != GameState.Playing) return;
+            if (_gameState == null || _gameState.CurrentStatePlayer != GameStatePlayer.Playing) return;
             if (_playerBody == null || _cameraPivot == null) return;
             if (_snapshots.Count >= _maxRecordedFrames) return;
 
