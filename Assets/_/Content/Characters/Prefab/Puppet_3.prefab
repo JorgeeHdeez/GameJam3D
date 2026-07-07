@@ -52,6 +52,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Puppet_3
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: bed411f24ffab5a42ad5eacf74b63b71, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3657928811284593852, guid: bed411f24ffab5a42ad5eacf74b63b71, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -72,13 +76,19 @@ PrefabInstance:
       addedObject: {fileID: 6381651366895376865}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: bed411f24ffab5a42ad5eacf74b63b71, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 7335635173462863720}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: bed411f24ffab5a42ad5eacf74b63b71, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 6171189358640153346}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: bed411f24ffab5a42ad5eacf74b63b71, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 7335635173462863720}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: bed411f24ffab5a42ad5eacf74b63b71, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2719101271438745995}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: bed411f24ffab5a42ad5eacf74b63b71, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 8494838714237910326}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: bed411f24ffab5a42ad5eacf74b63b71, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5482191885898257452}
   m_SourcePrefab: {fileID: 100100000, guid: bed411f24ffab5a42ad5eacf74b63b71, type: 3}
 --- !u!1 &3257840626482788321 stripped
 GameObject:
@@ -132,34 +142,14 @@ MonoBehaviour:
   _obstacleLayer:
     serializedVersion: 2
     m_Bits: 73
-  _sightGainPerSecond: 1.5
+  _sightGainPerSecond: 0.3
   _hearingGainPerSecond: 0.6
   _decayPerSecond: 0.4
   _hearingCap: 0.7
   _suspiciousThreshold: 0.4
   _alertedThreshold: 0.95
   _pingDetectionBump: 0.5
---- !u!114 &7335635173462863720
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3257840626482788321}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 723ba8876bfa45e4cb489ccdf7a76e4e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Enemy.Runtime::Enemy.Runtime.EnemyPatrol
-  _updateManager: {fileID: 0}
-  _perception: {fileID: 6381651366895376865}
-  _noisePingChannel: {fileID: 11400000, guid: be629f7390a310c479c45d870a31a29d, type: 2}
-  _waypoints: []
-  _moveSpeed: 2
-  _turnSpeed: 360
-  _arriveDistance: 0.3
-  _waitTime: 1
-  _investigateLookTime: 2
+  _hearingReactionTime: 0.5
 --- !u!114 &6171189358640153346
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -174,11 +164,52 @@ MonoBehaviour:
   m_EditorClassIdentifier: Enemy.Runtime::Enemy.Runtime.EnemyChase
   _updateManager: {fileID: 0}
   _perception: {fileID: 6381651366895376865}
+  _agent: {fileID: 5482191885898257452}
   _target: {fileID: 0}
   _catchChannel: {fileID: 11400000, guid: 28a772f9a3af4624fbaa021f466ce898, type: 2}
   _chaseSpeed: 3.5
-  _turnSpeed: 540
-  _catchDistance: 0.6
+  _catchDistance: 1.2
+--- !u!114 &7335635173462863720
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3257840626482788321}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 723ba8876bfa45e4cb489ccdf7a76e4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Enemy.Runtime::Enemy.Runtime.EnemyPatrol
+  _updateManager: {fileID: 0}
+  _perception: {fileID: 6381651366895376865}
+  _agent: {fileID: 5482191885898257452}
+  _noisePingChannel: {fileID: 11400000, guid: be629f7390a310c479c45d870a31a29d, type: 2}
+  _waypoints: []
+  _patrolSpeed: 2
+  _arriveDistance: 0.3
+  _waitTime: 1
+  _investigateLookTime: 2
+--- !u!114 &2719101271438745995
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3257840626482788321}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb71385b9f8714b439f427469fb87484, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Enemy.Runtime::Enemy.Runtime.EnemyRewindReset
+  _gameState: {fileID: 11400000, guid: 6b50f070ce0416d43bc66996ed399f65, type: 2}
+  _agent: {fileID: 5482191885898257452}
+  _perception: {fileID: 6381651366895376865}
+  _behaviours:
+  - {fileID: 7335635173462863720}
+  - {fileID: 6171189358640153346}
+  - {fileID: 6381651366895376865}
+  - {fileID: 6421317086724766513}
 --- !u!136 &8494838714237910326
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -202,6 +233,28 @@ CapsuleCollider:
   m_Height: 1.66
   m_Direction: 1
   m_Center: {x: 0.15, y: 0.82, z: 0.07}
+--- !u!195 &5482191885898257452
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3257840626482788321}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!95 &8114871566037825313 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: bed411f24ffab5a42ad5eacf74b63b71, type: 3}

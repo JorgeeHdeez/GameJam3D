@@ -15021,6 +15021,70 @@ Mesh:
       - serializedVersion: 1
         m_IndexStart: 0
         m_IndexCount: 0
+--- !u!1 &706425734
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 706425736}
+  - component: {fileID: 706425735}
+  m_Layer: 0
+  m_Name: NavMesh_Surface
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &706425735
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 706425734}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.AI.Navigation::Unity.AI.Navigation.NavMeshSurface
+  m_SerializedVersion: 0
+  m_AgentTypeID: 0
+  m_CollectObjects: 0
+  m_Size: {x: 10, y: 10, z: 10}
+  m_Center: {x: 0, y: 2, z: 0}
+  m_LayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_UseGeometry: 0
+  m_DefaultArea: 0
+  m_GenerateLinks: 0
+  m_IgnoreNavMeshAgent: 1
+  m_IgnoreNavMeshObstacle: 1
+  m_OverrideTileSize: 0
+  m_TileSize: 256
+  m_OverrideVoxelSize: 0
+  m_VoxelSize: 0.16666667
+  m_MinRegionArea: 2
+  m_NavMeshData: {fileID: 23800000, guid: 362634d2a0ffef844acbac69ce218d44, type: 2}
+  m_BuildHeightMesh: 0
+--- !u!4 &706425736
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 706425734}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -4.48472, y: 1.67262, z: 2.863}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!43 &714385999
 Mesh:
   m_ObjectHideFlags: 0
@@ -16423,13 +16487,14 @@ GameObject:
   - component: {fileID: 786058117}
   - component: {fileID: 786058116}
   - component: {fileID: 786058115}
+  - component: {fileID: 786058122}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!136 &786058115
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -16540,6 +16605,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Enemy.Runtime::Enemy.Runtime.EnemyPatrol
   _updateManager: {fileID: 677410017}
   _perception: {fileID: 786058120}
+  _agent: {fileID: 0}
   _noisePingChannel: {fileID: 11400000, guid: be629f7390a310c479c45d870a31a29d, type: 2}
   _waypoints:
   - {fileID: 743114433}
@@ -16548,8 +16614,7 @@ MonoBehaviour:
   - {fileID: 1481333521}
   - {fileID: 269603225}
   - {fileID: 2027960312}
-  _moveSpeed: 2
-  _turnSpeed: 360
+  _patrolSpeed: 2
   _arriveDistance: 0.3
   _waitTime: 1
   _investigateLookTime: 2
@@ -16587,6 +16652,7 @@ MonoBehaviour:
   _suspiciousThreshold: 0.4
   _alertedThreshold: 0.95
   _pingDetectionBump: 0.5
+  _hearingReactionTime: 0.5
 --- !u!114 &786058121
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16601,11 +16667,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: Enemy.Runtime::Enemy.Runtime.EnemyChase
   _updateManager: {fileID: 677410017}
   _perception: {fileID: 786058120}
+  _agent: {fileID: 786058122}
   _target: {fileID: 1677282001}
   _catchChannel: {fileID: 11400000, guid: 28a772f9a3af4624fbaa021f466ce898, type: 2}
   _chaseSpeed: 3.5
-  _turnSpeed: 540
   _catchDistance: 0.6
+--- !u!195 &786058122
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 786058114}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 1
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!43 &788107156
 Mesh:
   m_ObjectHideFlags: 0
@@ -27567,6 +27655,30 @@ PrefabInstance:
       propertyPath: _updateManager
       value: 
       objectReference: {fileID: 677410017}
+    - target: {fileID: 6661276772374704004, guid: 87d9a7a28006e9b42bd53188a238735d, type: 3}
+      propertyPath: '_waypoints.Array.data[0]'
+      value: 
+      objectReference: {fileID: 743114433}
+    - target: {fileID: 6661276772374704004, guid: 87d9a7a28006e9b42bd53188a238735d, type: 3}
+      propertyPath: '_waypoints.Array.data[1]'
+      value: 
+      objectReference: {fileID: 852003857}
+    - target: {fileID: 6661276772374704004, guid: 87d9a7a28006e9b42bd53188a238735d, type: 3}
+      propertyPath: '_waypoints.Array.data[2]'
+      value: 
+      objectReference: {fileID: 1265517830}
+    - target: {fileID: 6661276772374704004, guid: 87d9a7a28006e9b42bd53188a238735d, type: 3}
+      propertyPath: '_waypoints.Array.data[3]'
+      value: 
+      objectReference: {fileID: 1481333521}
+    - target: {fileID: 6661276772374704004, guid: 87d9a7a28006e9b42bd53188a238735d, type: 3}
+      propertyPath: '_waypoints.Array.data[4]'
+      value: 
+      objectReference: {fileID: 269603225}
+    - target: {fileID: 6661276772374704004, guid: 87d9a7a28006e9b42bd53188a238735d, type: 3}
+      propertyPath: '_waypoints.Array.data[5]'
+      value: 
+      objectReference: {fileID: 2027960312}
     - target: {fileID: 8509294540824690998, guid: 87d9a7a28006e9b42bd53188a238735d, type: 3}
       propertyPath: m_Name
       value: Puppet_4
@@ -27581,7 +27693,7 @@ PrefabInstance:
       objectReference: {fileID: 677410017}
     - target: {fileID: 9033313619612703628, guid: 87d9a7a28006e9b42bd53188a238735d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -4.35
+      value: -0.05
       objectReference: {fileID: 0}
     - target: {fileID: 9033313619612703628, guid: 87d9a7a28006e9b42bd53188a238735d, type: 3}
       propertyPath: m_LocalPosition.y
@@ -27589,7 +27701,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9033313619612703628, guid: 87d9a7a28006e9b42bd53188a238735d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 2.45
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 9033313619612703628, guid: 87d9a7a28006e9b42bd53188a238735d, type: 3}
       propertyPath: m_LocalRotation.w
@@ -28677,7 +28789,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1231772608}
   m_Layer: 0
-  m_Name: EnemyPath (01)
+  m_Name: EnemyPath (Puppet_4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -37540,11 +37652,13 @@ GameObject:
   - component: {fileID: 1677282006}
   - component: {fileID: 1677282005}
   - component: {fileID: 1677282003}
+  - component: {fileID: 1677282012}
+  - component: {fileID: 1677282014}
+  - component: {fileID: 1677282013}
   - component: {fileID: 1677282002}
   - component: {fileID: 1677281998}
   - component: {fileID: 1677282000}
   - component: {fileID: 1677281999}
-  - component: {fileID: 1677282012}
   m_Layer: 0
   m_Name: Player_ROOT
   m_TagString: Untagged
@@ -37780,7 +37894,7 @@ MonoBehaviour:
   _wallSensor: {fileID: 1677282006}
   _noiseEmitter: {fileID: 1677282003}
   _coverContextChannel: {fileID: 11400000, guid: bd53c7397ebac7f46a7a7b52a434b443, type: 2}
-  _caughtChannel: {fileID: 11400000, guid: f6406f8133127a94a80f360cc76d136e, type: 2}
+  _caughtChannel: {fileID: 0}
   _runSpeed: 5.5
   _crouchSpeed: 2
   _crawlSpeed: 1
@@ -37863,6 +37977,46 @@ MonoBehaviour:
   _cameraPivot: {fileID: 1367444197}
   _playerVisibility: {fileID: 11400000, guid: 0d07dfc315dfabf4db270900da2fd8ca, type: 2}
   _hideAction: {fileID: -672099713846271715, guid: 6d045fe94322aef48b04bad48ff8dc73, type: 3}
+--- !u!114 &1677282013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1677281997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b09952af83be03841a7553ec6a38b924, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Player.Runtime::Player.Runtime.RewindController
+  _updateManager: {fileID: 677410017}
+  _gameState: {fileID: 11400000, guid: 6b50f070ce0416d43bc66996ed399f65, type: 2}
+  _recorder: {fileID: 1677282014}
+  _caughtChannel: {fileID: 11400000, guid: 28a772f9a3af4624fbaa021f466ce898, type: 2}
+  _playerBody: {fileID: 1677282001}
+  _cameraPivot: {fileID: 1367444197}
+  _playerController: {fileID: 1677282009}
+  _playerLook: {fileID: 1677282010}
+  _cameraRig: {fileID: 1677282011}
+  _hideController: {fileID: 1677282012}
+  _rewindFramesPerSecond: 1000
+--- !u!114 &1677282014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1677281997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3fe5443dc695844db9ec100ecd6cd0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Player.Runtime::Player.Runtime.PlayerRecorder
+  _updateManager: {fileID: 677410017}
+  _gameState: {fileID: 11400000, guid: 6b50f070ce0416d43bc66996ed399f65, type: 2}
+  _playerBody: {fileID: 1677282001}
+  _cameraPivot: {fileID: 1367444197}
+  _maxRecordedFrames: 20000
 --- !u!43 &1678879057
 Mesh:
   m_ObjectHideFlags: 0
@@ -40719,6 +40873,74 @@ Mesh:
       - serializedVersion: 1
         m_IndexStart: 0
         m_IndexCount: 0
+--- !u!1 &1801932031
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1801932034}
+  - component: {fileID: 1801932033}
+  - component: {fileID: 1801932032}
+  m_Layer: 0
+  m_Name: WinCondition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1801932032
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1801932031}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a366e0cd2874fd74785669533d463645, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Player.Runtime::Player.Runtime.ExitCheckpoint
+  _gameState: {fileID: 11400000, guid: 6b50f070ce0416d43bc66996ed399f65, type: 2}
+  _wonChannel: {fileID: 11400000, guid: 599ab740619ffaa4ab4dc8996a4c34ca, type: 2}
+--- !u!135 &1801932033
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1801932031}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 3
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!4 &1801932034
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1801932031}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -14.65, y: 0.5, z: 11.75}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!43 &1802608086
 Mesh:
   m_ObjectHideFlags: 0
@@ -46399,6 +46621,7 @@ SceneRoots:
   - {fileID: 1816500037}
   - {fileID: 330585546}
   - {fileID: 1160532352}
+  - {fileID: 706425736}
   - {fileID: 273499246}
   - {fileID: 410087041}
   - {fileID: 832575519}
@@ -46411,9 +46634,10 @@ SceneRoots:
   - {fileID: 1499315722}
   - {fileID: 1728508914}
   - {fileID: 1208906642}
-  - {fileID: 786058118}
   - {fileID: 1231772608}
+  - {fileID: 786058118}
   - {fileID: 1862924652}
   - {fileID: 2138253646}
   - {fileID: 234112475}
   - {fileID: 1677282001}
+  - {fileID: 1801932034}
