@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -30,18 +31,36 @@ namespace MenuUiControl.Editor
                     return;
                 }
 
-                // Sauvegarde le setup AVANT de changer quoi que ce soit
                 _previousSceneSetup = EditorSceneManager.GetSceneManagerSetup();
 
-                EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo();
+                Debug.Log($"[PLAY MODE]: Setup sauvegardé — {_previousSceneSetup.Length} scène(s) :");
+                foreach (var s in _previousSceneSetup)
+                    Debug.Log($"  → {s.path} | isLoaded={s.isLoaded} | isActive={s.isActive}");
 
-                var scene0Path = EditorBuildSettings.scenes[0].path;
-                EditorSceneManager.OpenScene(scene0Path, OpenSceneMode.Single);
+                EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo();
+                EditorSceneManager.OpenScene(EditorBuildSettings.scenes[0].path, OpenSceneMode.Single);
             }
             else if (state == PlayModeStateChange.EnteredEditMode)
             {
-                if (_previousSceneSetup != null && _previousSceneSetup.Length > 0)
-                    EditorSceneManager.RestoreSceneManagerSetup(_previousSceneSetup);
+                Debug.Log($"[PLAY MODE]: EnteredEditMode — setup à restaurer : {(_previousSceneSetup == null ? "NULL" : _previousSceneSetup.Length.ToString())}");
+
+                if (_previousSceneSetup == null || _previousSceneSetup.Length == 0) return;
+
+                var valid = new List<SceneSetup>();
+                foreach (var setup in _previousSceneSetup)
+                {
+                    var guid = AssetDatabase.AssetPathToGUID(setup.path);
+                    Debug.Log($"  → {setup.path} | guid={guid}");
+                    if (!string.IsNullOrEmpty(guid))
+                        valid.Add(setup);
+                    else
+                        Debug.LogWarning($"[PLAY MODE]: Scène introuvable ignorée : {setup.path}");
+                }
+
+                Debug.Log($"[PLAY MODE]: {valid.Count} scène(s) valide(s) à restaurer");
+
+                if (valid.Count > 0)
+                    EditorSceneManager.RestoreSceneManagerSetup(valid.ToArray());
             }
         }
 
