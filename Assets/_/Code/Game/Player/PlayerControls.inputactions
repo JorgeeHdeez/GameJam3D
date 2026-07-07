@@ -25,15 +25,6 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "ToogleCamera",
-                    "type": "Button",
-                    "id": "692a571f-dbde-4fb0-8983-4601a423acf9",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Sprint",
                     "type": "Button",
                     "id": "641cd816-40e6-41b4-8c3d-04687c349290",
@@ -73,6 +64,15 @@
                     "name": "WallHug",
                     "type": "Button",
                     "id": "0a2f13dc-8dd6-446d-bcd2-65dc84e8d8a7",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Hide",
+                    "type": "Button",
+                    "id": "c274add6-132a-4d4d-a83a-1bec31adabd1",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -236,28 +236,6 @@
                 },
                 {
                     "name": "",
-                    "id": "f66a49fb-6baf-419b-8a8e-e1146580a1c9",
-                    "path": "<Gamepad>/leftShoulder",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Gamepad",
-                    "action": "ToogleCamera",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "be53ff72-094f-4c81-8cd3-cd250624ee5e",
-                    "path": "<Keyboard>/v",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Keyboard&Mouse",
-                    "action": "ToogleCamera",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "74e269e3-d05f-4065-8a4a-0aa1db232b87",
                     "path": "<Keyboard>/a",
                     "interactions": "",
@@ -270,7 +248,7 @@
                 {
                     "name": "",
                     "id": "b985cdbb-56b8-4bc0-922a-29139354f9e7",
-                    "path": "<Gamepad>/leftTrigger",
+                    "path": "<Gamepad>/rightShoulder",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
@@ -341,6 +319,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "WallHug",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "33f11d4c-6c6b-4445-a4b5-c1deb785fdfa",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "Hide",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e1a143e4-44cc-4051-8910-5114d47a68ea",
+                    "path": "<Keyboard>/h",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Hide",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -10,7 +10,7 @@ namespace Enemy.Runtime
     /// line-of-sight raycast, so the enemy cannot see through them. Receives its tick
     /// from the <see cref="UpdateManager"/>.
     /// </summary>
-    public sealed class EnemyPerception : MonoBehaviour, IUpdatable
+    public sealed class EnemyPerception : MonoBehaviour, IUpdatable, IDetectionSource
     {
         #region Fields
 
@@ -20,6 +20,8 @@ namespace Enemy.Runtime
         [SerializeField] private PerceptionStateEventChannelSO _stateChannel;
         [SerializeField] private VoidEventChannelSO _alarmChannel;
         [SerializeField] private NoisePingEventChannelSO _noisePingChannel;
+        [SerializeField] private DetectionRegistrySO _detectionRegistry;
+        [SerializeField] private PlayerVisibilitySO _playerVisibility;
 
         [Header("Vision Cone")]
         [SerializeField] private float _eyeHeight = 1.6f;
@@ -83,6 +85,8 @@ namespace Enemy.Runtime
         {
             _updateManager.Register(this);
 
+            if (_detectionRegistry != null) _detectionRegistry.Register(this);
+
             if (_noiseChannel != null) _noiseChannel.OnEventRaised += OnNoiseRaised;
             if (_noisePingChannel != null) _noisePingChannel.OnEventRaised += OnNoisePing;
         }
@@ -90,6 +94,8 @@ namespace Enemy.Runtime
         private void OnDisable()
         {
             _updateManager.Unregister(this);
+
+            if (_detectionRegistry != null) _detectionRegistry.Unregister(this);
 
             if (_noiseChannel != null) _noiseChannel.OnEventRaised -= OnNoiseRaised;
             if (_noisePingChannel != null) _noisePingChannel.OnEventRaised -= OnNoisePing;
@@ -125,6 +131,7 @@ namespace Enemy.Runtime
         private bool CanSeeTarget()
         {
             if (_target == null) return false;
+            if (_playerVisibility != null && _playerVisibility.IsHidden) return false;
 
             Vector3 eye = transform.position + Vector3.up * _eyeHeight;
             Vector3 toTarget = (_target.position + Vector3.up * _targetHeight) - eye;
@@ -141,6 +148,7 @@ namespace Enemy.Runtime
         private bool HearsTarget()
         {
             if (_target == null) return false;
+            if (_playerVisibility != null && _playerVisibility.IsHidden) return false;
             if (_currentNoiseRadius <= 0.0f) return false;
 
             float sqrDistance = (_target.position - transform.position).sqrMagnitude;
