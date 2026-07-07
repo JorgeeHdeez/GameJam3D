@@ -55,6 +55,16 @@ namespace Enemy.Runtime
 
         #region Public API
 
+        /// <summary>Clears the detection meter and awareness, e.g. on a rewind reset.</summary>
+        public void ResetPerception()
+        {
+            _detectionLevel = 0.0f;
+            _currentNoiseRadius = 0.0f;
+            _currentState = PerceptionState.Unaware;
+
+            if (_stateChannel != null) _stateChannel.Raise(_currentState);
+        }
+
         public void Tick(float deltaTime)
         {
             bool sees = CanSeeTarget();
