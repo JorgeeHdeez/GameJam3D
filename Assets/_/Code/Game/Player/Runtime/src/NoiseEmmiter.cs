@@ -6,7 +6,11 @@ namespace Player.Runtime
     /// <summary>
     /// Converts the player's state into a stealth noise radius and broadcasts it
     /// through a ScriptableObject event channel. Listeners (e.g. enemy perception)
-    /// react without holding any direct reference to the player.
+    /// react without holding any direct reference to the player. The radius is
+    /// broadcast every tick rather than only on change: event channels do not replay
+    /// their last value to new or reset subscribers, so re-broadcasting guarantees an
+    /// enemy that subscribes late or has its hearing reset (e.g. after a rewind) always
+    /// has the current radius instead of being stuck deaf until the next change.
     /// </summary>
     public sealed class NoiseEmitter : MonoBehaviour
     {
@@ -32,18 +36,15 @@ namespace Player.Runtime
         #region Public API
 
         /// <summary>
-        /// Computes the noise radius for <paramref name="state"/> and raises the
-        /// channel only when the value actually changes, to avoid spamming listeners.
+        /// Computes the noise radius for <paramref name="state"/> and broadcasts it on
+        /// the channel every call, so listeners always hold the current value.
         /// </summary>
         public void Emit(PlayerState state)
         {
-            float radius = ResolveRadius(state);
-            if (Mathf.Approximately(radius, _currentNoiseRadius)) return;
-
-            _currentNoiseRadius = radius;
+            _currentNoiseRadius = ResolveRadius(state);
 
             if (_noiseChannel == null) return;
-            _noiseChannel.Raise(radius);
+            _noiseChannel.Raise(_currentNoiseRadius);
         }
 
         #endregion
