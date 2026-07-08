@@ -1,109 +1,110 @@
+using PrimeTween;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using PrimeTween;
 
 namespace Interractions.Runtime
 {
     public class OpenDoors : MonoBehaviour
     {
-        #region Inspecteur
+
+        #region Inspector
 
         [Header("Configuration")]
-        [SerializeField] private Vector3 openRotation = new Vector3(0, 90, 0);
-        [SerializeField] private float doorDuration = 0.5f;
+        [SerializeField] private Vector3 m_openRotation = new Vector3(0, 90, 0);
+        [SerializeField] private float m_doorDuration = 3.5f;
 
         [Header("Interaction")]
-        [SerializeField] private Transform playerTransform;
-        [SerializeField] private float maxInteractionDistance = 5f;
+        [SerializeField] private Transform m_playerTransform;
+        [SerializeField] private float m_maxInteractionDistance = 5f;
 
         #endregion
 
-        private Camera mainCamera; 
-        private bool isOpen = false;
+
+        #region Unity Lifecycle
 
         private void Start()
         {
-            Debug.Log($"<color=cyan>[PORTAL CRITICAL]</color> Start() commencé sur {gameObject.name}.");
+            _closedRotation = transform.localEulerAngles;
+            _closedPosition = transform.localPosition;
 
-            mainCamera = Camera.main;
-            if (mainCamera == null)
-            {
-                Debug.LogError("<color=red>[PORTAL ERROR]</color> Caméra principale ('MainCamera') introuvable.");
-            }
+            _mainCamera = Camera.main;
+            if (_mainCamera == null)
+                Debug.LogError("[OPEN DOORS]: CamÃ©ra principale introuvable.");
 
-            if (playerTransform == null)
+            if (m_playerTransform == null)
             {
-                GameObject playerGO = GameObject.FindWithTag("Player");
+                var playerGO = GameObject.FindWithTag("Player");
                 if (playerGO != null)
-                {
-                    playerTransform = playerGO.transform;
-                    Debug.Log("<color=green>[PORTAL INFO]</color> Joueur assigné avec succès !");
-                }
+                    m_playerTransform = playerGO.transform;
                 else
-                {
-                    Debug.LogError("<color=red>[PORTAL ERROR]</color> Aucun GameObject avec le tag 'Player' dans la scène !");
-                }
+                    Debug.LogError("[OPEN DOORS]: Aucun GameObject avec le tag 'Player'.");
             }
-
-            Debug.Log($"<color=cyan>[PORTAL CRITICAL]</color> Start() terminé proprement sur {gameObject.name}.");
         }
 
         private void Update()
         {
-            // Check si la souris existe et si le clic gauche vient d'être enfoncé
-            if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame && mainCamera != null)
-            {
-                // On récupère la position de la souris via le New Input System
-                Vector2 mousePosition = Mouse.current.position.ReadValue();
-                Ray ray = mainCamera.ScreenPointToRay(mousePosition);
+            if (Mouse.current == null || !Mouse.current.leftButton.wasPressedThisFrame || _mainCamera == null) return;
 
-                if (Physics.Raycast(ray, out RaycastHit hit, 100f))
-                {
-                    if (hit.transform == transform || hit.transform.IsChildOf(transform))
-                    {
-                        Debug.Log($"<color=yellow>[PORTAL CLICK]</color> Clic détecté sur : {hit.transform.name}");
-                        TriggerInteraction();
-                    }
-                }
-            }
+            var ray = _mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
+            if (!Physics.Raycast(ray, out RaycastHit hit, 100f)) return;
+
+            if (hit.transform == transform || hit.transform.IsChildOf(transform))
+                TriggerInteraction();
         }
+
+        #endregion
+
+
+        #region Main
 
         public void TriggerInteraction()
         {
-            if (isOpen) return;
+            if (m_playerTransform == null) return;
 
-            if (playerTransform == null)
+            float distance = Vector3.Distance(transform.position, m_playerTransform.position);
+            if (distance > m_maxInteractionDistance)
             {
-                Debug.LogError("<color=red>[PORTAL ERROR]</color> playerTransform est NULL.");
+                Debug.LogWarning("[OPEN DOORS]: Trop loin !");
                 return;
             }
 
-            float distance = Vector3.Distance(transform.position, playerTransform.position);
-            Debug.Log($"<color=orange>[PORTAL DISTANCE]</color> Distance : {distance}m / Max : {maxInteractionDistance}m");
-
-            if (distance <= maxInteractionDistance)
-            {
-                OpenDoor();
-            }
+            if (_isOpen)
+                CloseDoor();
             else
-            {
-                Debug.LogWarning("<color=orange>[PORTAL DISTANCE]</color> Trop loin !");
-            }
+                OpenDoor();
         }
 
         public void OpenDoor()
         {
-            isOpen = true;
-            Debug.Log($"<color=green>[PORTAL TWEEN]</color> Lancement de la séquence sur {gameObject.name}");
-
-            Vector3 currentLocalPos = transform.localPosition;
+            _isOpen = true;
 
             Sequence.Create()
-                .Group(Tween.LocalRotation(transform, openRotation, doorDuration, Ease.OutBack))
-                .Group(Tween.LocalPositionX(transform, currentLocalPos.x - 0.5f, doorDuration / 3.5f, Ease.InOutSine))
-                .Group(Tween.LocalPositionZ(transform, currentLocalPos.z - 0.5f, doorDuration / 3.5f, Ease.InOutSine))
-
-                .OnComplete(() => Debug.Log("<color=green>[PORTAL TWEEN]</color> Tous les mouvements sont finis !"));
+                .Group(Tween.LocalRotation(transform, m_openRotation, m_doorDuration, Ease.OutBack))
+                .Group(Tween.LocalPositionX(transform, _closedPosition.x - 0.039149f, m_doorDuration / 3.5f, Ease.InOutSine))
+                .Group(Tween.LocalPositionZ(transform, _closedPosition.z + 0.80711f, m_doorDuration / 3.5f, Ease.InOutSine));
         }
+
+        public void CloseDoor()
+        {
+            _isOpen = false;
+
+            Sequence.Create()
+                .Group(Tween.LocalRotation(transform, _closedRotation, m_doorDuration, Ease.InBack))
+                .Group(Tween.LocalPositionX(transform, _closedPosition.x, m_doorDuration / 3.5f, Ease.InOutSine))
+                .Group(Tween.LocalPositionZ(transform, _closedPosition.z, m_doorDuration / 3.5f, Ease.InOutSine));
+        }
+
+        #endregion
+
+
+        #region Private
+
+        private Camera _mainCamera;
+        private bool _isOpen = false;
+        private Vector3 _closedRotation;
+        private Vector3 _closedPosition;
+
+        #endregion
+
     }
 }

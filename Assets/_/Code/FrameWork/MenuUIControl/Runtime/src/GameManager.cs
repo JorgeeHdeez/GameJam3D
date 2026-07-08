@@ -1,12 +1,20 @@
 using System;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.InputSystem.UI;
+using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 namespace MenuUiControl.Runtime
 {
     public class GameManager : MonoBehaviour
     {
+
+        #region Inspector
+
+        [SerializeField] private InputActionReference m_pauseAction;
+        [SerializeField] private string m_pauseSceneName;
+
+        #endregion
+
 
         #region Unity Lifecycle
 
@@ -20,7 +28,25 @@ namespace MenuUiControl.Runtime
 
             Instance = this;
             DontDestroyOnLoad(gameObject);
-            EnsureEventSystem();
+        }
+
+        private void OnEnable()
+        {
+            if (m_pauseAction == null)
+            {
+                Debug.LogError("[GAME MANAGER]: m_pauseAction non assigné !");
+                return;
+            }
+
+            m_pauseAction.action.performed += OnPauseInput;
+            m_pauseAction.action.Enable();
+        }
+
+        private void OnDisable()
+        {
+            if (m_pauseAction == null) return;
+            m_pauseAction.action.performed -= OnPauseInput;
+            m_pauseAction.action.Disable();
         }
 
         #endregion
@@ -49,12 +75,6 @@ namespace MenuUiControl.Runtime
             OnGameStateChanged?.Invoke(CurrentState);
         }
 
-        public void TogglePause()
-        {
-            if (CurrentState != GameState.Playing && CurrentState != GameState.Paused) return;
-            SetState(CurrentState == GameState.Paused ? GameState.Playing : GameState.Paused);
-        }
-
         public void QuitGame()
         {
 #if UNITY_EDITOR
@@ -69,15 +89,18 @@ namespace MenuUiControl.Runtime
 
         #region Private Methods
 
-        private void EnsureEventSystem()
+        private void OnPauseInput(InputAction.CallbackContext ctx)
         {
-            if (EventSystem.current != null) return;
-
-            var go = new GameObject("EventSystem");
-            go.AddComponent<EventSystem>();
-            go.AddComponent<InputSystemUIInputModule>();
-            DontDestroyOnLoad(go);
+            if (CurrentState != GameState.Playing) return;
+            SetState(GameState.Paused);
+            if (!string.IsNullOrEmpty(m_pauseSceneName))
+                SceneManager.LoadSceneAsync(m_pauseSceneName, LoadSceneMode.Additive);
         }
+
+        #endregion
+
+
+        #region Private
 
         #endregion
 
