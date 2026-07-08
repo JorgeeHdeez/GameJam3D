@@ -172,7 +172,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: MenuUIControl.Runtime::MenuUiControl.Runtime.SceneButton
   m_action: 0
-  m_sceneName: 02_Game
+  m_sceneName: 04_LD_Red
   m_isOverlay: 0
   m_sortingOrder: 0
   m_setState: 1

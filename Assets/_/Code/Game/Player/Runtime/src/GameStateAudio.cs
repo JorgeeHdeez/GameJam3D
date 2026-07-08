@@ -75,9 +75,9 @@ namespace Player.Runtime
 
         #region Private Methods
 
-        private void OnStateChanged(GameState state)
+        private void OnStateChanged(GameStatePlayer state)
         {
-            if (state == GameState.Rewinding)
+            if (state == GameStatePlayer.Rewinding)
             {
                 AudioListener.volume = 0f;
 
@@ -88,7 +88,7 @@ namespace Player.Runtime
                 m_rewindSource.ignoreListenerVolume = true;
                 m_rewindSource.Play();
             }
-            else if (state == GameState.Playing)
+            else if (state == GameStatePlayer.Playing)
             {
                 AudioListener.volume = 1f;
                 _alarmCooldownTimer = 0f;
