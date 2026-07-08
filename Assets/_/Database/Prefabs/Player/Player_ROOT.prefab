@@ -589,6 +589,7 @@ GameObject:
   - component: {fileID: 2587125015545415783}
   - component: {fileID: 1000983578152964377}
   - component: {fileID: 5815076200382314815}
+  - component: {fileID: 1439953868857369102}
   - component: {fileID: 1008743005223700628}
   - component: {fileID: 2795350515389781663}
   - component: {fileID: 9052446230036750838}
@@ -642,7 +643,7 @@ MonoBehaviour:
   _wallSensor: {fileID: 2556824399542104564}
   _noiseEmitter: {fileID: 2587125015545415783}
   _coverContextChannel: {fileID: 11400000, guid: bd53c7397ebac7f46a7a7b52a434b443, type: 2}
-  _caughtChannel: {fileID: 0}
+  _caughtChannel: {fileID: 11400000, guid: 28a772f9a3af4624fbaa021f466ce898, type: 2}
   _runSpeed: 5.5
   _crouchSpeed: 2
   _crawlSpeed: 1
@@ -831,6 +832,23 @@ MonoBehaviour:
   _playerBody: {fileID: 2435642260106707749}
   _cameraPivot: {fileID: 7420283044903247046}
   _maxRecordedFrames: 20000
+--- !u!114 &1439953868857369102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6134928507021558462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c944ce99746a224e8e2d660b44dbe08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Player.Runtime::Player.Runtime.PlayerStress
+  _updateManager: {fileID: 0}
+  _detectionRegistry: {fileID: 11400000, guid: 2ba45e53e656cc849b51706d78e51660, type: 2}
+  _stressChannel: {fileID: 11400000, guid: affa9eb5413d2c2488a51a227dc8a9c9, type: 2}
+  _riseSpeed: 3
+  _fallSpeed: 0.8
 --- !u!114 &1008743005223700628
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -853,7 +871,7 @@ MonoBehaviour:
   _playerLook: {fileID: 372581207799263151}
   _cameraRig: {fileID: 3326403602041168568}
   _hideController: {fileID: 1000983578152964377}
-  _rewindFramesPerSecond: 1000
+  _rewindFramesPerSecond: 3000
 --- !u!114 &2795350515389781663
 MonoBehaviour:
   m_ObjectHideFlags: 0

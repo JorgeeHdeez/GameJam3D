@@ -59,7 +59,7 @@ namespace MenuUiControl.Editor
                 var loadedRaw = SessionState.GetString(_sessionLoadedKey, "");
                 var activePath = SessionState.GetString(_sessionActiveKey, "");
 
-                Debug.Log($"[PLAY MODE]: EnteredEditMode — paths={pathsRaw}");
+                //Debug.Log($"[PLAY MODE]: EnteredEditMode — paths={pathsRaw}");
 
                 if (string.IsNullOrEmpty(pathsRaw)) return;
 
@@ -86,7 +86,7 @@ namespace MenuUiControl.Editor
                     });
                 }
 
-                Debug.Log($"[PLAY MODE]: {valid.Count} scène(s) restaurées");
+                //Debug.Log($"[PLAY MODE]: {valid.Count} scène(s) restaurées");
 
                 if (valid.Count > 0)
                     EditorSceneManager.RestoreSceneManagerSetup(valid.ToArray());
