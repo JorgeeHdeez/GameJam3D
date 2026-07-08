@@ -16,26 +16,26 @@ namespace Core.Runtime
         #region Fields
 
         /// <summary>Raised whenever the state actually changes.</summary>
-        public event Action<GameState> OnStateChanged;
+        public event Action<GameStatePlayer> OnStateChanged;
 
         #endregion
 
 
         #region Properties
 
-        public GameState CurrentState => _currentState;
+        public GameStatePlayer CurrentStatePlayer => _currentStatePlayer;
 
         #endregion
 
 
         #region Public API
 
-        public void SetState(GameState state)
+        public void SetState(GameStatePlayer statePlayer)
         {
-            if (state == _currentState) return;
+            if (statePlayer == _currentStatePlayer) return;
 
-            _currentState = state;
-            OnStateChanged?.Invoke(state);
+            _currentStatePlayer = statePlayer;
+            OnStateChanged?.Invoke(statePlayer);
         }
 
         #endregion
@@ -43,14 +43,14 @@ namespace Core.Runtime
 
         #region Unity Callbacks
 
-        private void OnEnable() => _currentState = GameState.Playing;
+        private void OnEnable() => _currentStatePlayer = GameStatePlayer.Playing;
 
         #endregion
 
 
         #region Private Fields
 
-        private GameState _currentState = GameState.Playing;
+        private GameStatePlayer _currentStatePlayer = GameStatePlayer.Playing;
 
         #endregion
     }

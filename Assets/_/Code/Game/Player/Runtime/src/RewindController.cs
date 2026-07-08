@@ -39,7 +39,7 @@ namespace Player.Runtime
 
         public void Tick(float deltaTime)
         {
-            if (_gameState == null || _gameState.CurrentState != GameState.Rewinding) return;
+            if (_gameState == null || _gameState.CurrentStatePlayer != GameStatePlayer.Rewinding) return;
 
             StepRewind(deltaTime);
         }
@@ -77,12 +77,12 @@ namespace Player.Runtime
 
         private void OnCaught()
         {
-            if (_gameState == null || _gameState.CurrentState != GameState.Playing) return;
+            if (_gameState == null || _gameState.CurrentStatePlayer != GameStatePlayer.Playing) return;
             if (_recorder == null || _recorder.Count == 0) return;
 
             SetPlayerControlEnabled(false);
             _cursor = _recorder.Count - 1;
-            _gameState.SetState(GameState.Rewinding);
+            _gameState.SetState(GameStatePlayer.Rewinding);
         }
 
         private void StepRewind(float deltaTime)
@@ -120,7 +120,7 @@ namespace Player.Runtime
             SetPlayerControlEnabled(true);
 
             // Returning to Playing is what tells enemies to reset themselves.
-            _gameState.SetState(GameState.Playing);
+            _gameState.SetState(GameStatePlayer.Playing);
         }
 
         private void SetPlayerControlEnabled(bool isEnabled)

@@ -1,7 +1,7 @@
 using UnityEngine;
 using PrimeTween;
 
-namespace Interractions
+namespace Interractions.Runtime
 {
     public class Interractors : MonoBehaviour
     {
@@ -18,7 +18,7 @@ namespace Interractions
         [SerializeField] private AudioSource audioSource;
         [SerializeField] private float fadeDuration = 1f;
 
-        // 1. ANIME LA PORTE (Rebond à la fin avec Ease.OutBack)
+        // 1. ANIME LA PORTE (Rebond ï¿½ la fin avec Ease.OutBack)
         public void OpenDoor()
         {
             Tween.LocalRotation(targetDoor, openRotation, doorDuration, Ease.OutBack);
@@ -28,11 +28,11 @@ namespace Interractions
         public void PopItem()
         {
             itemVisual.localScale = Vector3.zero;
-            // Monte à 1.2 puis se stabilise à 1.0 grâce à OutBack
+            // Monte ï¿½ 1.2 puis se stabilise ï¿½ 1.0 grï¿½ce ï¿½ OutBack
             Tween.Scale(itemVisual, 1f, popDuration, Ease.OutBack);
         }
 
-        // 3. FADE AUDIO (Idéal pour changer d'ambiance en douceur)
+        // 3. FADE AUDIO (Idï¿½al pour changer d'ambiance en douceur)
         public void FadeOutAudio()
         {
             Tween.AudioVolume(audioSource, 0f, fadeDuration, Ease.Linear)

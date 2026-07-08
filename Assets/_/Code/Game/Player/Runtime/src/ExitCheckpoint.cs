@@ -23,12 +23,12 @@ namespace Player.Runtime
 
         private void OnTriggerEnter(Collider other)
         {
-            if (_gameState == null || _gameState.CurrentState != GameState.Playing) return;
+            if (_gameState == null || _gameState.CurrentStatePlayer != GameStatePlayer.Playing) return;
 
             PlayerController player = other.GetComponentInParent<PlayerController>();
             if (player == null) return;
 
-            _gameState.SetState(GameState.Won);
+            _gameState.SetState(GameStatePlayer.Won);
 
             if (_wonChannel != null) _wonChannel.Raise();
         }
