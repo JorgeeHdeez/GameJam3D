@@ -1,0 +1,20 @@
+{
+    "name": "Player.Editor",
+    "rootNamespace": "Player.Editor",
+    "references": [
+        "Core.Editor",
+        "Core.Runtime",
+        "Player.Runtime"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

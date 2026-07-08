@@ -14,7 +14,6 @@ namespace Interractions.Runtime
         [SerializeField] private float m_doorDuration = 3.5f;
 
         [Header("Interaction")]
-        [SerializeField] private Transform m_playerTransform;
         [SerializeField] private float m_maxInteractionDistance = 5f;
 
         #endregion
@@ -31,14 +30,11 @@ namespace Interractions.Runtime
             if (_mainCamera == null)
                 Debug.LogError("[OPEN DOORS]: Caméra principale introuvable.");
 
-            if (m_playerTransform == null)
-            {
-                var playerGO = GameObject.FindWithTag("Player");
-                if (playerGO != null)
-                    m_playerTransform = playerGO.transform;
-                else
-                    Debug.LogError("[OPEN DOORS]: Aucun GameObject avec le tag 'Player'.");
-            }
+            var playerGO = GameObject.FindWithTag("Player");
+            if (playerGO != null)
+                _playerTransform = playerGO.transform;
+            else
+                Debug.LogError("[OPEN DOORS]: Aucun GameObject avec le tag 'Player'.");
         }
 
         private void Update()
@@ -59,9 +55,9 @@ namespace Interractions.Runtime
 
         public void TriggerInteraction()
         {
-            if (m_playerTransform == null) return;
+            if (_playerTransform == null) return;
 
-            float distance = Vector3.Distance(transform.position, m_playerTransform.position);
+            float distance = Vector3.Distance(transform.position, _playerTransform.position);
             if (distance > m_maxInteractionDistance)
             {
                 Debug.LogWarning("[OPEN DOORS]: Trop loin !");
@@ -77,7 +73,6 @@ namespace Interractions.Runtime
         public void OpenDoor()
         {
             _isOpen = true;
-
             Sequence.Create()
                 .Group(Tween.LocalRotation(transform, m_openRotation, m_doorDuration, Ease.OutBack))
                 .Group(Tween.LocalPositionX(transform, _closedPosition.x - 0.039149f, m_doorDuration / 3.5f, Ease.InOutSine))
@@ -87,7 +82,6 @@ namespace Interractions.Runtime
         public void CloseDoor()
         {
             _isOpen = false;
-
             Sequence.Create()
                 .Group(Tween.LocalRotation(transform, _closedRotation, m_doorDuration, Ease.InBack))
                 .Group(Tween.LocalPositionX(transform, _closedPosition.x, m_doorDuration / 3.5f, Ease.InOutSine))
@@ -100,6 +94,7 @@ namespace Interractions.Runtime
         #region Private
 
         private Camera _mainCamera;
+        private Transform _playerTransform;
         private bool _isOpen = false;
         private Vector3 _closedRotation;
         private Vector3 _closedPosition;
