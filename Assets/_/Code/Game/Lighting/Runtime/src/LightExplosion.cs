@@ -17,6 +17,8 @@ namespace Lighting.Runtime
         [SerializeField] private UpdateManager _updateManager;
         [SerializeField] private Light _light;
         [SerializeField] private ParticleSystem _explosionParticles;
+        [SerializeField] private NoisePingEventChannelSO _noisePingChannel;
+        [SerializeField] private float _noiseRadius = 15.0f;
         [SerializeField] private LayerMask _triggerLayers;
         [SerializeField] private float _maxIntensity = 8.0f;
         [SerializeField] private float _chargeDuration = 1.0f;
@@ -76,6 +78,9 @@ namespace Lighting.Runtime
             _phase = Phase.Exploded;
 
             if (_explosionParticles != null) _explosionParticles.Play();
+
+            // The bang is a loud event: ping enemies so they investigate the spot.
+            if (_noisePingChannel != null) _noisePingChannel.Raise(new NoisePing(transform.position, _noiseRadius));
 
             if (_light == null) return;
             _light.intensity = 0.0f;

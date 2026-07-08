@@ -20,6 +20,7 @@ namespace Enemy.Runtime
         [SerializeField] private UpdateManager _updateManager;
         [SerializeField] private EnemyPerception _perception;
         [SerializeField] private NavMeshAgent _agent;
+        [SerializeField] private NoisePingEventChannelSO _noisePingChannel;
         [SerializeField] private float _returnSpeed = 2.0f;
         [SerializeField] private float _arriveDistance = 0.4f;
         [SerializeField] private float _reorientSpeed = 360.0f;
@@ -63,9 +64,19 @@ namespace Enemy.Runtime
             _postRotation = transform.rotation;
         }
 
-        private void OnEnable() => _updateManager.Register(this);
+        private void OnEnable()
+        {
+            _updateManager.Register(this);
 
-        private void OnDisable() => _updateManager.Unregister(this);
+            if (_noisePingChannel != null) _noisePingChannel.OnEventRaised += OnNoisePing;
+        }
+
+        private void OnDisable()
+        {
+            _updateManager.Unregister(this);
+
+            if (_noisePingChannel != null) _noisePingChannel.OnEventRaised -= OnNoisePing;
+        }
 
         #endregion
 
@@ -84,6 +95,17 @@ namespace Enemy.Runtime
         #region Private Methods
 
         private bool IsAlerted() => _perception != null && _perception.CurrentState == PerceptionState.Alerted;
+
+        // A loud event within range (e.g. a light exploding) pulls the guard off its
+        // post to investigate; it returns and re-faces afterwards on its own.
+        private void OnNoisePing(NoisePing ping)
+        {
+            if ((transform.position - ping.Position).sqrMagnitude > ping.Radius * ping.Radius) return;
+
+            _investigateTarget = ping.Position;
+            _hasInvestigateTarget = true;
+            _investigateTimer = 0.0f;
+        }
 
         private void Investigate(float deltaTime)
         {
