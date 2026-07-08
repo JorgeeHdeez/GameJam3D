@@ -54,13 +54,13 @@ namespace Enemy.Runtime
 
         #region Private Methods
 
-        private void OnStateChanged(GameState state)
+        private void OnStateChanged(GameStatePlayer statePlayer)
         {
             // Enemies only act during play; any other state (rewind, won) freezes them.
-            SetFrozen(state != GameState.Playing);
+            SetFrozen(statePlayer != GameStatePlayer.Playing);
 
             // The rewind ends by returning to Playing - that is our cue to reset.
-            if (state == GameState.Playing) ResetToStart();
+            if (statePlayer == GameStatePlayer.Playing) ResetToStart();
         }
 
         private void SetFrozen(bool isFrozen)

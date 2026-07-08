@@ -29,7 +29,7 @@ namespace Presentation.Runtime
         {
             if (_volume == null || _gameState == null) return;
 
-            float targetWeight = _gameState.CurrentState == GameState.Rewinding ? 1.0f : 0.0f;
+            float targetWeight = _gameState.CurrentStatePlayer == GameStatePlayer.Rewinding ? 1.0f : 0.0f;
             if (Mathf.Approximately(_volume.weight, targetWeight)) return;
 
             _volume.weight = Mathf.MoveTowards(_volume.weight, targetWeight, _transitionSpeed * deltaTime);
