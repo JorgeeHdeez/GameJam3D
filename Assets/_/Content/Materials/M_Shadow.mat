@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Shadow
+  m_Name: M_Shadow
   m_Shader: {fileID: -6465566751694194690, guid: ac0a1a35f43a03b479e9cded49bbde75, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
