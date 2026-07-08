@@ -591,7 +591,7 @@ GameObject:
   - component: {fileID: 5815076200382314815}
   - component: {fileID: 1008743005223700628}
   - component: {fileID: 2795350515389781663}
-  - component: {fileID: 1404190282827556128}
+  - component: {fileID: 9052446230036750838}
   - component: {fileID: 8834557058008399099}
   - component: {fileID: 4989400003776333957}
   - component: {fileID: 8964547175219357242}
@@ -882,7 +882,7 @@ MonoBehaviour:
   m_heart2PitchMax: 1.8
   m_fadeSpeed: 2
   m_pitchSpeed: 0.3
---- !u!114 &1404190282827556128
+--- !u!114 &9052446230036750838
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1044,7 +1044,7 @@ Transform:
   m_GameObject: {fileID: 7860775890719272449}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.195, z: -0.934}
+  m_LocalPosition: {x: 0.3536, y: -0.195, z: -3.7008}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -1062,7 +1062,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f416de010544fee469bba58f6cb06cac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Lighting.Runtime::Lighting.Runtime.FlashlightFlicker
-  _updateManager: {fileID: 0}
+  _updateManager: {fileID: 5085125397210144744, guid: 49e19be6552a69d45b9ce8942416abe2, type: 3}
   _light: {fileID: 3314144814655529086}
   _baseIntensity: 2
   _minCalm: 2.5
@@ -1081,11 +1081,11 @@ Light:
   m_Enabled: 1
   serializedVersion: 12
   m_Type: 0
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 20
-  m_Range: 20
-  m_SpotAngle: 30
-  m_InnerSpotAngle: 21.80208
+  m_Color: {r: 0.7176471, g: 0.7554935, b: 0.972549, a: 1}
+  m_Intensity: 89.9
+  m_Range: 49.2
+  m_SpotAngle: 52.9
+  m_InnerSpotAngle: 18.36
   m_CookieSize2D: {x: 0.5, y: 0.5}
   m_Shadows:
     m_Type: 0
