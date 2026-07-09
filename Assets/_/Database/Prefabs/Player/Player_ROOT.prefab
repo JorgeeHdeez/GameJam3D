@@ -612,8 +612,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6134928507021558462}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0.997981, z: 0, w: 0.0635136}
-  m_LocalPosition: {x: -4.69, y: 1.5, z: 16.75}
+  m_LocalRotation: {x: -0, y: -0.99798125, z: -0, w: 0.06351005}
+  m_LocalPosition: {x: 2.54, y: 1.96, z: -11.33}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -643,7 +643,7 @@ MonoBehaviour:
   _wallSensor: {fileID: 2556824399542104564}
   _noiseEmitter: {fileID: 2587125015545415783}
   _coverContextChannel: {fileID: 11400000, guid: bd53c7397ebac7f46a7a7b52a434b443, type: 2}
-  _caughtChannel: {fileID: 11400000, guid: 28a772f9a3af4624fbaa021f466ce898, type: 2}
+  _caughtChannel: {fileID: 0}
   _runSpeed: 5.5
   _crouchSpeed: 2
   _crawlSpeed: 1
@@ -1062,7 +1062,7 @@ Transform:
   m_GameObject: {fileID: 7860775890719272449}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.3536, y: -0.195, z: -3.7008}
+  m_LocalPosition: {x: 0.548, y: -0.197, z: -1.489}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -1082,7 +1082,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Lighting.Runtime::Lighting.Runtime.FlashlightFlicker
   _updateManager: {fileID: 5085125397210144744, guid: 49e19be6552a69d45b9ce8942416abe2, type: 3}
   _light: {fileID: 3314144814655529086}
-  _baseIntensity: 2
+  _baseIntensity: 200
   _minCalm: 2.5
   _maxCalm: 9
   _burstDuration: 0.45
@@ -1100,8 +1100,8 @@ Light:
   serializedVersion: 12
   m_Type: 0
   m_Color: {r: 0.7176471, g: 0.7554935, b: 0.972549, a: 1}
-  m_Intensity: 89.9
-  m_Range: 49.2
+  m_Intensity: 200
+  m_Range: 50
   m_SpotAngle: 52.9
   m_InnerSpotAngle: 18.36
   m_CookieSize2D: {x: 0.5, y: 0.5}
