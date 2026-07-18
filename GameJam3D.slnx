@@ -2,7 +2,17 @@
   <Project Path="Player.Runtime.csproj" />
   <Project Path="Enemy.Runtime.csproj" />
   <Project Path="Core.Editor.csproj" />
+  <Project Path="PrimeTween.Demo.csproj" />
   <Project Path="Core.Runtime.csproj" />
-  <Project Path="ManageFolder.Editor.csproj" />
+  <Project Path="MenuUIControl.Runtime.csproj" />
+  <Project Path="Player.Editor.csproj" />
+  <Project Path="Interractions.Runtime.csproj" />
+  <Project Path="Hud.Runtime.csproj" />
   <Project Path="Enemy.Editor.csproj" />
+  <Project Path="Lighting.Runtime.csproj" />
+  <Project Path="Interractions.Editor.csproj" />
+  <Project Path="PrimeTween.Debug.csproj" />
+  <Project Path="Presentation.Runtime.csproj" />
+  <Project Path="MenuUIControl.Editor.csproj" />
+  <Project Path="PrimeTween.Installer.csproj" />
 </Solution>
